@@ -3,14 +3,12 @@
 <h1 align="center">
 <b>Awesome Launch80 List</b> <img src="https://awesome.re/badge-flat.svg"/></h1>
 
-<p align="center">
+<p>
 A community-compiled index of open-source repositories (2+ stars) built and shared by members of the
-<a href="https://discord.gg/launch80">Launch80 Discord</a> — the independent work people are
-discussing in the server for running local LLMs on AMD GPUs (Radeon AI PRO R9700, V620,
-RX 7900 XTX, CDNA datacenter cards, Strix Halo, Intel Arc) and for agent tooling.
+<a href="https://discord.gg/launch80">Launch80 Discord</a>.
 </p>
 
-<p align="center">
+<p>
 <i>Every repo below was posted to the Launch80 Discord by (or on behalf of) the person who owns it —
 shared to help the broader community make progress. Entries credit the builder and the Discord
 member who shared it.</i>
