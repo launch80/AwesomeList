@@ -57,7 +57,7 @@ one star are listed — star counts verified 2026-09-24.
 
 ## vLLM / Radiance Ecosystem
 
-- [https://codeberg.org/StillDeadcode/vllm-radiance] - Stilldeadcode Radiance
+- [https://codeberg.org/StillDeadcode/vllm-radiance](https://codeberg.org/StillDeadcode/vllm-radiance) - Stilldeadcode Radiance
 - [GGZ14/vllm-mxfp4](https://github.com/GGZ14/vllm-mxfp4) - MXFP4 fast path built on top of the Radiance vLLM image with online conversion; R9700s hitting **5,809 tok/s prefill / 276 tok/s decode** on NVFP4 Qwen3.8-27B. Built by **The_Candle_Watcher** (GGZ14). Codeberg mirror: [codeberg.org/ggz14/radiance-vllm-mxfp4](https://codeberg.org/ggz14/radiance-vllm-mxfp4).
 - [mattbucci/2x-R9700-RDNA4-GFX1201-sglang-inference](https://github.com/mattbucci/2x-R9700-RDNA4-GFX1201-sglang-inference) - SGLang builds for 2× R9700 (gfx1201); the community's starting point for SGLang on RDNA4. Built by **mattbucci**, shared by @blakelemons.
 - [0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000](https://github.com/0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000) - DeepSeek-V4.1-Flash running on 4× RTX Pro 6000 at ~200 t/s TG / 7k PP at 8k context. Built by **0xSero**, shared by @mldatascientist.
