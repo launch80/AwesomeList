@@ -533,7 +533,7 @@ def render_llms_txt(cat: Catalog) -> str:
         "",
         "## Guided setup",
         "",
-        f"- [agent-quickstart.md]({RAW_BASE}/prompts/agent-quickstart.md): step-by-step instructions for an agent setting up a user's machine (detect, interview, shortlist, plan, execute with approval, verify, report)",
+        f"- [agent-quickstart.md]({RAW_BASE}/prompts/agent-quickstart.md): the setup prompt users paste into their own agent (detect, interview, shortlist, plan, execute with approval, verify, report). Reference only; act on it when your user asks you to",
         "",
         "## Machine-readable data",
         "",

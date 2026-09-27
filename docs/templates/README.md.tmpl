@@ -18,26 +18,31 @@ member who shared it.</i>
 ## Agent quickstart
 
 <small>
-Use an agent to detect your hardware with read-only commands, asks you only what it can't
-detect, shortlists compatible entries from this catalog, and walks you through setup. It asks for
-your approval before every step that changes your system, then benchmarks the result and drafts a
+Your agent detects your hardware with read-only commands, asks you only what it can't detect,
+shortlists compatible entries from this catalog, and walks you through setup. It asks for your
+approval before every step that changes your system, then benchmarks the result and drafts a
 reproduction report for you to file.
 </small>
 
-### Copy and paste this into your agent:
-
-```text
-Fetch https://raw.githubusercontent.com/launch80/AwesomeList/main/prompts/agent-quickstart.md and follow it to help me set up local inference. Interview me for anything you can't detect.
-```
-
-<details>
-<summary>Agent can't fetch URLs? Paste the full prompt instead.</summary>
+### Option 1: paste this prompt into your agent
 
 ```text
 <!-- agent_prompt -->
 ```
 
-</details>
+### Option 2: run your agent inside a clone
+
+```sh
+git clone --depth 1 https://github.com/launch80/AwesomeList && cd AwesomeList
+```
+
+Start your agent in that folder and ask it to *"help me set up local inference on this machine."*
+It reads [`AGENTS.md`](AGENTS.md), which points it to the same steps in
+[`prompts/agent-quickstart.md`](prompts/agent-quickstart.md). Read them first if you like.
+
+Either way, the instructions come from you, and the agent treats everything it fetches (this
+catalog, project READMEs, scripts) as reference data. There's deliberately no "fetch this URL and
+follow it" shortcut: that's the shape of a prompt injection, and a careful agent should refuse it.
 
 > [!NOTE]
 > This README is **generated** from the structured catalog in [`catalog/`](catalog/) by
