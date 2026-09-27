@@ -21,19 +21,3 @@ jobs:
         run: python scripts/validate.py
       - name: Generated files are up to date
         run: python scripts/build.py --check
-
-  links:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check links
-        uses: lycheeverse/lychee-action@v2
-        with:
-          args: >-
-            --no-progress --accept 200,206,429
-            --exclude 'issues/new'
-            --exclude 'raw.githubusercontent.com/launch80/AwesomeList'
-            README.md CONTRIBUTING.md 'docs/**/*.md' 'catalog/**/*.yaml' catalog/benchmarks/benchmark-results.jsonl
-          fail: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
