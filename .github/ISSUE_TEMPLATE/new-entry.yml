@@ -1,0 +1,43 @@
+name: Add a project
+description: Suggest a community-owned repo for the list (a maintainer will turn it into a catalog record).
+labels: [new-entry]
+body:
+  - type: input
+    id: repository
+    attributes:
+      label: Repository URL
+    validations:
+      required: true
+  - type: input
+    id: builders
+    attributes:
+      label: Builder(s) — Discord handle
+    validations:
+      required: true
+  - type: input
+    id: shared_by
+    attributes:
+      label: Shared by (if not the builder)
+  - type: input
+    id: outcome
+    attributes:
+      label: One-line outcome — what does someone get from it?
+    validations:
+      required: true
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware it targets
+      description: GPU model(s), architecture (rdna2/rdna3/rdna4/cdna/cdna2/intel_arc/...), GPU count, VRAM, host notes.
+    validations:
+      required: true
+  - type: textarea
+    id: software
+    attributes:
+      label: Software stack
+      description: OS + version, kernel, ROCm/driver version, runtime + version/commit, Docker image tag.
+  - type: textarea
+    id: result
+    attributes:
+      label: Reported result (optional)
+      description: Model artifact, quantization, context, prompt/output tokens, concurrency, decode/prefill tok/s, exact command, date.

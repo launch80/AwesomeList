@@ -1,0 +1,17 @@
+id: alloyium
+name: Alloyium-ai/alloyium
+tagline: Real-time communication between agents using existing Claude/ChatGPT subscriptions.
+use_it_if: You want multiple agents on your existing subscriptions to talk to each other in real time.
+kind: agent_harness
+categories: [agents]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/Alloyium-ai/alloyium
+people:
+  builders: [atcsecure]
+hardware:
+  agnostic: true
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

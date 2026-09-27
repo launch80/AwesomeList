@@ -1,0 +1,19 @@
+id: v620-toolbox
+name: BlivionIaG/v620_toolbox
+tagline: Scripts and utilities for Radeon Pro V620 boxes.
+use_it_if: You run V620s and want the community's helper scripts.
+kind: toolbox
+categories: [tooling]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/BlivionIaG/v620_toolbox
+people:
+  builders: [BlivionIaG]
+hardware:
+  vendors: [amd]
+  architectures: [rdna2]
+  gpu_models: [v620]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

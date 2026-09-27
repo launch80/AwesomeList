@@ -1,0 +1,30 @@
+id: vllm-rdna2-qwen
+name: leapdragon/vllm-rdna2-qwen
+tagline: vLLM fork for 4× V620 — ~70 t/s with MTP=3 on Qwen3.8-Flash-Next W4A16.
+use_it_if: You have a multi-V620 (RDNA2) server and want Qwen serving with MTP.
+kind: runtime_fork
+categories: [inference_servers, multi_gpu]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/leapdragon/vllm-rdna2-qwen
+people:
+  builders: [leapdragon]
+  shared_by: [Schimazing]
+hardware:
+  vendors: [amd]
+  architectures: [rdna2]
+  gpu_models: [v620]
+  host_notes: Reported on a Zen 2 EPYC / PCIe Gen4 platform.
+software:
+  runtimes: [vllm]
+provides: [openai_api, mtp, speculative_decoding]
+supports:
+  model_families: [qwen3]
+  models: [Qwen3.8-Flash-Next W4A16]
+  quantizations: [w4a16]
+  topologies: [multi_gpu]
+evidence: [rdna2-qwen-v620x4-flash-next-w4a16]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"

@@ -1,0 +1,27 @@
+id: vllm-rdna2-recipe
+name: leapdragon/vllm-rdna2-recipe
+tagline: Deployment recipe for vLLM on RDNA2, including a fix for prefill blocking generation.
+use_it_if: You are deploying vLLM on V620s and want the documented steps plus the concurrency fix.
+kind: deployment_guide
+categories: [inference_servers, launchers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/leapdragon/vllm-rdna2-recipe
+people:
+  builders: [leapdragon]
+  contributors: [wsantos]
+hardware:
+  vendors: [amd]
+  architectures: [rdna2]
+  gpu_models: [v620]
+software:
+  runtimes: [vllm]
+  based_on: [vllm-rdna2-qwen]
+provides: [openai_api, continuous_batching]
+supports:
+  topologies: [multi_gpu]
+evidence: [rdna2-recipe-v620x4-8-streams]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"

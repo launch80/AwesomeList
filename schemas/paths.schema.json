@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/paths.schema.json",
+  "title": "Launch80 start-here paths",
+  "description": "Goal-first entry points rendered as the README 'Start here' table.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "i_want_to", "hardware", "typical_reader", "start_with", "why"],
+    "properties": {
+      "id": { "$ref": "vocabulary.schema.json#/$defs/id" },
+      "i_want_to": { "type": "string" },
+      "hardware": { "type": "string" },
+      "architectures": { "type": "array", "items": { "$ref": "vocabulary.schema.json#/$defs/architecture" } },
+      "typical_reader": { "type": "string" },
+      "priority": { "type": "string", "enum": ["stability", "simplicity", "throughput"], "description": "Set when the path serves one priority only; the selector then boosts it only for that priority." },
+      "start_with": { "type": "array", "minItems": 1, "items": { "$ref": "vocabulary.schema.json#/$defs/id" } },
+      "then": { "type": "array", "items": { "$ref": "vocabulary.schema.json#/$defs/id" } },
+      "why": { "type": "string", "description": "The basis for the pick — community signal or the only option." },
+      "caveat": { "type": "string" }
+    }
+  }
+}

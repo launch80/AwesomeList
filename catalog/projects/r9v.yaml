@@ -1,0 +1,21 @@
+id: r9v
+name: Dyluhn/R9V
+tagline: GPU monitoring and inspection tool for the R9700.
+use_it_if: You run R9700s and want to watch GPU state while tuning or serving.
+kind: monitoring_tool
+categories: [tooling]
+maturity: supported
+audience: beginner
+links:
+  repository: https://github.com/Dyluhn/R9V
+people:
+  builders: [Dyluhn]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+provides: [monitoring]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"
+notes: Actively maintained in-server; regressions are tracked and fixed within hours of being reported.

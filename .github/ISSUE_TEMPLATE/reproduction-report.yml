@@ -1,0 +1,63 @@
+name: Reproduction report
+description: You ran a listed project on your own hardware — tell us what happened. This is how entries earn community_reproduced and recommended.
+labels: [reproduction]
+body:
+  - type: input
+    id: record
+    attributes:
+      label: Catalog ID
+      description: From the entry's card, e.g. zzpanic-gfx1201-launchers
+    validations:
+      required: true
+  - type: dropdown
+    id: outcome
+    attributes:
+      label: Outcome
+      options:
+        - Worked as documented
+        - Worked with changes (describe below)
+        - Did not work
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: Project commit or image tag you used
+    validations:
+      required: true
+  - type: textarea
+    id: hardware
+    attributes:
+      label: Hardware profile
+      description: GPU model × count, VRAM, P2P on/off, interconnect, host CPU, system RAM.
+    validations:
+      required: true
+  - type: textarea
+    id: platform
+    attributes:
+      label: Platform
+      description: OS + version, kernel, driver / ROCm version, Docker or bare metal.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Exact commands you ran
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: benchmark
+    attributes:
+      label: Benchmark (optional)
+      description: BetterBench command and output — model artifact, quantization, context, prompt/output tokens, concurrency, TTFT, decode/prefill tok/s.
+  - type: textarea
+    id: issues
+    attributes:
+      label: Problems and fixes
+  - type: input
+    id: handle
+    attributes:
+      label: Your Discord handle (for tested_by)
+    validations:
+      required: true

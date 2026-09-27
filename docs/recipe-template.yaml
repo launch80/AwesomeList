@@ -1,0 +1,61 @@
+# Copy to catalog/recipes/<id>.yaml, replace every <placeholder>, then run
+# `python scripts/validate.py && python scripts/build.py`.
+# Only record steps you actually ran. Pin versions and image tags; no "latest".
+id: <gpu>-<model>-<quant>-<runtime>          # e.g. r9700-qwen38-27b-mxfp4-vllm
+title: <Serve Qwen3.8-27B MXFP4 on one Radeon AI PRO R9700>
+projects: [<catalog project id>]
+maturity: unverified
+audience: operator
+goal:
+  provides: [openai_api]
+  priorities: [simplicity]
+compatibility:
+  architectures: [rdna4]
+  gpu_models: [r9700]
+  min_vram_gb: 32
+  gpu_count: { min: 1 }
+  topology: single_gpu
+  os: [ubuntu]
+  os_versions: ["24.04"]
+  rocm: ">=7.0,<7.2"
+  system_ram_gb: 64
+  disk_free_gb: 100
+model:
+  artifact: <exact Hugging Face repo or GGUF file>
+  family: qwen3
+  quantization: mxfp4
+  context_length: 131072
+dependencies:
+  required: [docker, rocm_runtime]
+  optional: [p2p_enabled]
+steps:
+  - id: preflight
+    command: rocm-smi --showproductname
+    expected: <R9700 listed>
+  - id: install
+    command: <docker pull image:pinned-tag>
+  - id: launch
+    command: <docker run ... exact flags>
+  - id: smoke_test
+    command: >-
+      curl -s localhost:8000/v1/chat/completions -H 'Content-Type: application/json'
+      -d '{"model":"<served name>","messages":[{"role":"user","content":"ping"}],"max_tokens":8}'
+    expected: A JSON chat.completion response
+  - id: benchmark
+    command: <BetterBench command and profile>
+success_criteria:
+  - Endpoint returns an OpenAI-compatible response
+rollback: <docker rm -f ...; docker rmi ...>
+known_failures:
+  - symptom: GPU is not visible in the container
+    likely_causes: [missing --device=/dev/kfd --device=/dev/dri, rocm_version_mismatch]
+    fix: <what fixed it for you>
+alternatives:
+  - if: "gpu.vram_gb < 32"
+    recommend: <lower-VRAM recipe or project id>
+evidence: [<benchmark record id>]
+verification:
+  level: author_reported
+  last_verified: "<YYYY-MM-DD>"
+  last_commit_checked: <git sha of the project>
+  tested_by: [<your Discord handle>]

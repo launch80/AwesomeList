@@ -1,0 +1,32 @@
+id: malicz-gfx1201-launchers
+name: malicz/vllm-gfx1201-launchers
+tagline: Single-R9700 Radiance + MXFP4 setup — Dockerfile, model download, MTP conversion and patches.
+use_it_if: You have one R9700 and want a complete Docker-based MXFP4 setup with 160K context.
+kind: launcher
+categories: [launchers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/malicz/vllm-gfx1201-launchers
+people:
+  builders: [malicz]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+  gpu_count: { min: 1 }
+software:
+  runtimes: [vllm]
+  container: true
+  based_on: [vllm-radiance]
+provides: [openai_api, mtp, dflash, speculative_decoding, long_context]
+supports:
+  model_families: [qwen3]
+  models: [Qwen3.8-27B MXFP4]
+  quantizations: [mxfp4]
+  topologies: [single_gpu]
+evidence: [malicz-r9700x1-qwen38-27b-mxfp4-160k]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"
+notes: Built on Deadcode's and Brian's work; includes patches such as patch_dflash_w4a16_kv.py.

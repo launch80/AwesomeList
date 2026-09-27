@@ -1,0 +1,27 @@
+id: magiccodingman-vllm-radiance
+name: magiccodingman/vllm-radiance
+tagline: Radiance rebased onto current vLLM main with DFlash2 and MXFP4 work merged in.
+use_it_if: You have an R9700 and want the Radiance-specific paths on a newer vLLM/PyTorch/ROCm stack, and can debug an experimental build.
+kind: runtime_fork
+categories: [inference_servers, radiance_ecosystem]
+maturity: experimental
+audience: developer
+links:
+  repository: https://github.com/magiccodingman/vllm-radiance
+people:
+  builders: [slurp]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+software:
+  runtimes: [vllm]
+  stack_notes: AMD PyTorch 2.12 / Triton 3.7.1 / AITER 0.1.20 / ROCm 7.14 (as stated by the author).
+  based_on: [vllm-radiance]
+provides: [openai_api, dflash, speculative_decoding]
+supports:
+  quantizations: [mxfp4]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"
+notes: Also mirrored on GitLab.

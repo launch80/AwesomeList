@@ -1,0 +1,26 @@
+id: hipengine
+name: shisa-ai/hipEngine
+tagline: From-scratch RX 7900 XTX inference engine with ~5.7x near-lossless KV compression and MTP.
+use_it_if: You have an RX 7900 XTX and want maximum context (up to 232K at Q4_K_M) from a single card.
+kind: inference_engine
+categories: [inference_servers]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/shisa-ai/hipEngine
+people:
+  builders: [lhl]
+hardware:
+  vendors: [amd]
+  architectures: [rdna3]
+  gpu_models: [rx7900xtx]
+software:
+  runtimes: [custom_engine]
+provides: [kv_compression, mtp, speculative_decoding, long_context]
+supports:
+  quantizations: [gguf_q4_k_m]
+  topologies: [single_gpu]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"
+notes: "v0.5.0 adds DMS KV compression (author reports 100% top-1, 0.001 KLD). Shared in #rx7900."

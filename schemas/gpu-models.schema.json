@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/gpu-models.schema.json",
+  "title": "Launch80 GPU model table",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["id", "name", "vendor", "architecture", "vram_gb"],
+    "properties": {
+      "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+      "name": { "type": "string" },
+      "vendor": { "$ref": "vocabulary.schema.json#/$defs/vendor" },
+      "architecture": { "$ref": "vocabulary.schema.json#/$defs/architecture" },
+      "gfx_target": { "type": ["string", "null"] },
+      "vram_gb": { "type": ["number", "null"] }
+    }
+  }
+}

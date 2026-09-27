@@ -1,0 +1,24 @@
+id: vllm-radiance
+name: StillDeadcode/vllm-radiance
+tagline: The Radiance vLLM image for gfx1201 — the base most community R9700 forks build on.
+use_it_if: You have an RDNA4 card (R9700-class) and want the common vLLM base the rest of the R9700 ecosystem assumes.
+kind: docker_image
+categories: [radiance_ecosystem, inference_servers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://codeberg.org/StillDeadcode/vllm-radiance
+  docker_image: https://hub.docker.com/r/stilldeadcode/vllm-radiance
+people:
+  builders: [Deadcode]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+software:
+  runtimes: [vllm]
+  container: true
+provides: [openai_api, continuous_batching]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

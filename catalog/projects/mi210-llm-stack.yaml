@@ -1,0 +1,24 @@
+id: mi210-llm-stack
+name: davetha/mi210-llm-stack
+tagline: Full MI210 LLM stack documentation with a per-tier model-weight serving matrix.
+use_it_if: You have MI210s and want to know which models and weights to serve at each tier before choosing a build.
+kind: deployment_guide
+categories: [launchers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/davetha/mi210-llm-stack
+people:
+  builders: [davetha]
+  shared_by: [mldatascientist]
+hardware:
+  vendors: [amd]
+  architectures: [cdna2]
+  gpu_models: [mi210]
+software:
+  runtimes: [vllm]
+  based_on: [mi210-vllm, aiter-cdna2]
+provides: [openai_api]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

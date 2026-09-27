@@ -1,0 +1,26 @@
+id: bmorgan-gfx1201-launchers
+name: BMorgan1296/qwen3.6-vllm-gfx1201-launchers
+tagline: Fork of the zzpanic launchers with fixes and DFlash changes contributed in-server.
+use_it_if: You are using the zzpanic launchers and need the fixes and DFlash changes made in the Discord.
+kind: launcher
+categories: [launchers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/BMorgan1296/qwen3.6-vllm-gfx1201-launchers
+people:
+  builders: [Bman1296]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+software:
+  runtimes: [vllm]
+  based_on: [zzpanic-gfx1201-launchers]
+provides: [openai_api, dflash, speculative_decoding]
+supports:
+  model_families: [qwen3]
+  topologies: [single_gpu]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

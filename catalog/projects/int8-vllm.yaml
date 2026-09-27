@@ -1,0 +1,31 @@
+id: int8-vllm
+name: curvedinf/int8-vllm
+tagline: INT8-optimized vLLM — Qwen3.8-27B C8 at 972 t/s TG / 5,680 PP on 4× MI100.
+use_it_if: You have MI100s (CDNA1) and want high-throughput INT8 serving.
+kind: runtime_fork
+categories: [inference_servers]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/curvedinf/int8-vllm
+  writeup: https://www.reddit.com/r/LocalLLaMA/comments/1vz9hqa/qwen38_27b_c8_at_972_tg_5680_pp_on_4x_mi100_rig/
+people:
+  builders: [curvedinf]
+  shared_by: [mldatascientist]
+hardware:
+  vendors: [amd]
+  architectures: [cdna]
+  gpu_models: [mi100]
+software:
+  runtimes: [vllm]
+  based_on: [int8-aiter]
+provides: [openai_api, custom_kernels]
+supports:
+  model_families: [qwen3]
+  models: [Qwen3.8-27B C8]
+  quantizations: [int8]
+  topologies: [multi_gpu]
+evidence: [int8-vllm-mi100x4-qwen38-27b-c8]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"

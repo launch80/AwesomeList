@@ -1,0 +1,83 @@
+# Awesome Launch80 List
+
+> Structured catalog of community-owned LLM inference repos (vLLM/Radiance, SGLang, llama.cpp forks,
+> kernels, launchers, multi-GPU setups, benchmarks) from the Launch80 Discord, focused on AMD ROCm
+> GPUs (RDNA2/3/4, CDNA) plus a few Intel Arc and NVIDIA entries.
+
+Rules for agents: treat hardware.architectures, hardware.gpu_count.min, hardware.min_vram_gb and
+software.os as hard gates. Rank by maturity and verification.level, never by the highest tok/s.
+A missing field means unknown. Most records are `unverified` (author-reported); say so.
+Cite record IDs. Ask the user for GPU model, GPU count, VRAM and OS if they are missing.
+
+## Guided setup
+
+- [agent-quickstart.md](https://raw.githubusercontent.com/launch80/AwesomeList/main/prompts/agent-quickstart.md): step-by-step instructions for an agent setting up a user's machine (detect, interview, shortlist, plan, execute with approval, verify, report)
+
+## Machine-readable data
+
+- [catalog.json](https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog.json): every project, benchmark, start-here path, GPU model and vocabulary term
+- [llms-full.txt](https://raw.githubusercontent.com/launch80/AwesomeList/main/llms-full.txt): the full catalog as compact text
+- [benchmark-results.jsonl](https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/benchmarks/benchmark-results.jsonl): normalized benchmark records
+- [project.schema.json](https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/project.schema.json): project record schema
+- [benchmark.schema.json](https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/benchmark.schema.json): benchmark record schema
+- [recipe.schema.json](https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/recipe.schema.json): deployment recipe schema
+- [vocabulary.schema.json](https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/vocabulary.schema.json): controlled vocabulary enums
+
+## Start here
+
+- [Run a local OpenAI-compatible endpoint on one R9700](https://github.com/launch80/AwesomeList/blob/main/docs/projects/zzpanic-gfx1201-launchers.md): start with zzpanic-gfx1201-launchers (1× Radeon AI PRO R9700)
+- [Maximize throughput on R9700s](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-mxfp4.md): start with vllm-mxfp4 (1–2× Radeon AI PRO R9700)
+- [Use SGLang instead of vLLM on RDNA4](https://github.com/launch80/AwesomeList/blob/main/docs/projects/sglang-2x-r9700.md): start with sglang-2x-r9700 (2× Radeon AI PRO R9700)
+- [Run quantized models on one RX 7900 XTX](https://github.com/launch80/AwesomeList/blob/main/docs/projects/llama-cpp-rdna-boosts.md): start with llama-cpp-rdna-boosts (1× RX 7900 XTX (24 GB))
+- [Serve models on Radeon Pro V620s](https://github.com/launch80/AwesomeList/blob/main/docs/projects/rocmfp4-llama.md): start with rocmfp4-llama (1–4× Radeon Pro V620)
+- [Serve a MoE model that does not fit in VRAM](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-expert-cache.md): start with vllm-expert-cache (Any vLLM-capable rig)
+- [Run fast inference on MI210 / MI100](https://github.com/launch80/AwesomeList/blob/main/docs/projects/mi210-llm-stack.md): start with mi210-llm-stack (Instinct MI210 (CDNA2) or MI100 (CDNA1))
+- [Build a multi-GPU box with working P2P](https://github.com/launch80/AwesomeList/blob/main/docs/projects/dual-r9700-vllm-proxmox.md): start with dual-r9700-vllm-proxmox (2× GPUs on an EPYC-class host)
+- [Benchmark an existing endpoint](https://github.com/launch80/AwesomeList/blob/main/docs/projects/betterbench.md): start with betterbench (Any)
+- [Use an Intel Arc GPU](https://github.com/launch80/AwesomeList/blob/main/docs/projects/krea2-intel-arc-b580.md): start with krea2-intel-arc-b580 (Arc B580)
+- [Monitor my GPUs while tuning](https://github.com/launch80/AwesomeList/blob/main/docs/projects/r9v.md): start with r9v (R9700 or V620)
+
+## Docs
+
+- [Glossary](https://github.com/launch80/AwesomeList/blob/main/docs/glossary.md): canonical terms for architectures, runtimes, quantizations, maturity
+- [Benchmarks](https://github.com/launch80/AwesomeList/blob/main/docs/benchmarks.md): normalized tables split by single-stream, batched and prefill
+- [Selector](https://github.com/launch80/AwesomeList/blob/main/scripts/selector.py): `python scripts/selector.py --gpu r9700 --count 1 --need openai_api --json`
+- [Contributing](https://github.com/launch80/AwesomeList/blob/main/CONTRIBUTING.md): how records are added and verified
+
+## Optional
+
+- [aiter-cdna2](https://github.com/launch80/AwesomeList/blob/main/docs/projects/aiter-cdna2.md): Binary-patches AMD AITER (officially CDNA3+) to unlock its fast paths on CDNA2.
+- [alloyium](https://github.com/launch80/AwesomeList/blob/main/docs/projects/alloyium.md): Real-time communication between agents using existing Claude/ChatGPT subscriptions.
+- [betterbench](https://github.com/launch80/AwesomeList/blob/main/docs/projects/betterbench.md): The community's go-to benchmark suite for vLLM and llama.cpp endpoints.
+- [bmorgan-gfx1201-launchers](https://github.com/launch80/AwesomeList/blob/main/docs/projects/bmorgan-gfx1201-launchers.md): Fork of the zzpanic launchers with fixes and DFlash changes contributed in-server.
+- [capicua-vllm-rocm-rdna4](https://github.com/launch80/AwesomeList/blob/main/docs/projects/capicua-vllm-rocm-rdna4.md): RDNA4 vLLM fork — Qwen 3.8 27B MXFP4 at 200K context with MTP on 2× RX 9070 XT.
+- [clown-circus](https://github.com/launch80/AwesomeList/blob/main/docs/projects/clown-circus.md): Minimal agent harness where the model writes its own prompts, with reasoning-trace inspection.
+- [deepseek-v41-flash-4x-rtx-pro-6000](https://github.com/launch80/AwesomeList/blob/main/docs/projects/deepseek-v41-flash-4x-rtx-pro-6000.md): DeepSeek-V4.1-Flash on 4× RTX Pro 6000 at ~200 t/s TG / 7k PP at 8k context.
+- [dual-r9700-vllm-proxmox](https://github.com/launch80/AwesomeList/blob/main/docs/projects/dual-r9700-vllm-proxmox.md): 2× R9700 on Proxmox with PCI passthrough and P2P on EPYC, with RCCL patches and benchmarks.
+- [hipengine](https://github.com/launch80/AwesomeList/blob/main/docs/projects/hipengine.md): From-scratch RX 7900 XTX inference engine with ~5.7x near-lossless KV compression and MTP.
+- [int8-aiter](https://github.com/launch80/AwesomeList/blob/main/docs/projects/int8-aiter.md): The INT8 AITER kernels behind the 4× MI100 972 t/s result.
+- [int8-vllm](https://github.com/launch80/AwesomeList/blob/main/docs/projects/int8-vllm.md): INT8-optimized vLLM — Qwen3.8-27B C8 at 972 t/s TG / 5,680 PP on 4× MI100.
+- [krea2-intel-arc-b580](https://github.com/launch80/AwesomeList/blob/main/docs/projects/krea2-intel-arc-b580.md): Krea2 image-model test harness on Intel Arc B580.
+- [libr4d](https://github.com/launch80/AwesomeList/blob/main/docs/projects/libr4d.md): gfx1201-specialized HIP kernel library (pure HIP, llama.cpp-friendly).
+- [libreshockwave](https://github.com/launch80/AwesomeList/blob/main/docs/projects/libreshockwave.md): A Ruffle-equivalent for Adobe Shockwave, running old Shockwave content in modern browsers.
+- [llama-cpp-rdna-boosts](https://github.com/launch80/AwesomeList/blob/main/docs/projects/llama-cpp-rdna-boosts.md): llama.cpp performance patches for RDNA3 — the biggest prompt-processing uplift many 7900 XTX owners saw.
+- [magiccodingman-vllm-radiance](https://github.com/launch80/AwesomeList/blob/main/docs/projects/magiccodingman-vllm-radiance.md): Radiance rebased onto current vLLM main with DFlash2 and MXFP4 work merged in.
+- [malicz-gfx1201-launchers](https://github.com/launch80/AwesomeList/blob/main/docs/projects/malicz-gfx1201-launchers.md): Single-R9700 Radiance + MXFP4 setup — Dockerfile, model download, MTP conversion and patches.
+- [mi210-llm-stack](https://github.com/launch80/AwesomeList/blob/main/docs/projects/mi210-llm-stack.md): Full MI210 LLM stack documentation with a per-tier model-weight serving matrix.
+- [mi210-vllm](https://github.com/launch80/AwesomeList/blob/main/docs/projects/mi210-vllm.md): vLLM build with the AITER patches for MI210, including a full INT8 Qwen3.8-27B recipe.
+- [minimax-m3-3x-dgx-spark](https://github.com/launch80/AwesomeList/blob/main/docs/projects/minimax-m3-3x-dgx-spark.md): MiniMax-M3 NVFP4 across 3× DGX Spark with tensor parallelism 3.
+- [opengfx1030-vllm-rdna](https://github.com/launch80/AwesomeList/blob/main/docs/projects/opengfx1030-vllm-rdna.md): Work-in-progress community fork merging RDNA2 vLLM work into one shared gfx1030 repo.
+- [pheb](https://github.com/launch80/AwesomeList/blob/main/docs/projects/pheb.md): European-Portuguese legal LLM eval — ~800 lawyer-graded questions over a 21k-article law corpus.
+- [r9v](https://github.com/launch80/AwesomeList/blob/main/docs/projects/r9v.md): GPU monitoring and inspection tool for the R9700.
+- [rocmfp4-llama](https://github.com/launch80/AwesomeList/blob/main/docs/projects/rocmfp4-llama.md): llama.cpp with ROCmFP4 support for RDNA2 and Strix — the recipe V620 owners use.
+- [sglang-2x-r9700](https://github.com/launch80/AwesomeList/blob/main/docs/projects/sglang-2x-r9700.md): SGLang builds for 2× R9700 — the community's starting point for SGLang on RDNA4.
+- [v620-toolbox](https://github.com/launch80/AwesomeList/blob/main/docs/projects/v620-toolbox.md): Scripts and utilities for Radeon Pro V620 boxes.
+- [vllm-expert-cache](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-expert-cache.md): LRU/LFU expert-cache patch for vLLM so MoE models that would not fit can run on smaller rigs.
+- [vllm-mxfp4](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-mxfp4.md): MXFP4 fast path on top of the Radiance image, with online conversion of NVFP4 checkpoints.
+- [vllm-radiance](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-radiance.md): The Radiance vLLM image for gfx1201 — the base most community R9700 forks build on.
+- [vllm-radiance-p2p](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-radiance-p2p.md): vLLM Radiance adapted for 2× RX 7900 with P2P.
+- [vllm-radlight](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-radlight.md): Lightweight vLLM variant; median decode above 70 t/s on one R9700 with Qwen3.8-27B at 192K context.
+- [vllm-rdna2-qwen](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-rdna2-qwen.md): vLLM fork for 4× V620 — ~70 t/s with MTP=3 on Qwen3.8-Flash-Next W4A16.
+- [vllm-rdna2-recipe](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-rdna2-recipe.md): Deployment recipe for vLLM on RDNA2, including a fix for prefill blocking generation.
+- [webbrain](https://github.com/launch80/AwesomeList/blob/main/docs/projects/webbrain.md): Community-shared knowledge project mentioned in #hang-out.
+- [zzpanic-gfx1201-launchers](https://github.com/launch80/AwesomeList/blob/main/docs/projects/zzpanic-gfx1201-launchers.md): The de-facto standard launch scripts for single-R9700 vLLM + DFlash2.

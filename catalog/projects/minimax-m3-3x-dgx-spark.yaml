@@ -1,0 +1,30 @@
+id: minimax-m3-3x-dgx-spark
+name: tonyd2wild/Minimax-M3-NVFP-3x-DGX-Sparks-TP-3
+tagline: MiniMax-M3 NVFP4 across 3× DGX Spark with tensor parallelism 3.
+use_it_if: You have several DGX Sparks and want to serve MiniMax-M3 across them.
+kind: deployment_guide
+categories: [radiance_ecosystem, multi_gpu]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/tonyd2wild/Minimax-M3-NVFP-3x-DGX-Sparks-TP-3
+people:
+  builders: [tonyd2wild]
+  shared_by: [The_Candle_Watcher]
+hardware:
+  vendors: [nvidia]
+  architectures: [nvidia_blackwell]
+  gpu_models: [dgx_spark]
+  gpu_count: { min: 3 }
+software:
+  runtimes: [vllm]
+provides: [openai_api, tensor_parallel]
+supports:
+  model_families: [minimax]
+  models: [MiniMax-M3 NVFP4]
+  quantizations: [nvfp4]
+  topologies: [multi_node]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"
+notes: Builder recorded by GitHub owner; Discord handle not yet recorded.

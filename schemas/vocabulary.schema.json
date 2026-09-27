@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/vocabulary.schema.json",
+  "title": "Launch80 controlled vocabulary",
+  "description": "GENERATED from catalog/vocabulary.yaml by scripts/build.py — do not edit.",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Stable kebab-case record ID."
+    },
+    "version_range": {
+      "type": "string",
+      "pattern": "^(?:(?:>=|<=|==|~=|>|<)?[0-9]+(?:\\.[0-9]+)*)(?:,(?:>=|<=|==|~=|>|<)?[0-9]+(?:\\.[0-9]+)*)*$",
+      "description": "A version or comma-separated range, e.g. '>=7.0,<7.2'."
+    },
+    "vendor": {
+      "enum": [
+        "amd",
+        "nvidia",
+        "intel"
+      ],
+      "description": "amd: AMD Radeon / Instinct GPUs (ROCm stack).; nvidia: NVIDIA GPUs (CUDA stack).; intel: Intel Arc / Data Center GPUs (oneAPI / XPU stack)."
+    },
+    "architecture": {
+      "enum": [
+        "rdna2",
+        "rdna3",
+        "rdna3_5",
+        "rdna4",
+        "cdna",
+        "cdna2",
+        "cdna3",
+        "intel_arc",
+        "nvidia_blackwell"
+      ],
+      "description": "rdna2: AMD RDNA2 consumer/workstation GPUs (gfx103x), e.g. Radeon Pro V620.; rdna3: AMD RDNA3 consumer/workstation GPUs (gfx110x), e.g. RX 7900 XTX.; rdna3_5: AMD RDNA3.5 APUs (gfx115x), e.g. Strix Halo / Strix Point.; rdna4: AMD RDNA4 GPUs (gfx120x), e.g. Radeon AI PRO R9700, RX 9070 XT.; cdna: AMD CDNA1 datacenter GPUs (gfx908), e.g. Instinct MI100.; cdna2: AMD CDNA2 datacenter GPUs (gfx90a), e.g. Instinct MI210 / MI250X.; cdna3: AMD CDNA3 datacenter GPUs (gfx942), e.g. Instinct MI300X.; intel_arc: Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580.; nvidia_blackwell: NVIDIA Blackwell GPUs, e.g. RTX Pro 6000, DGX Spark (GB10)."
+    },
+    "runtime": {
+      "enum": [
+        "vllm",
+        "sglang",
+        "llama_cpp",
+        "tgi",
+        "ollama",
+        "custom_engine",
+        "diffusion"
+      ],
+      "description": "vllm: vLLM or a vLLM fork (including the Radiance image).; sglang: SGLang or an SGLang fork.; llama_cpp: llama.cpp or a llama.cpp fork.; tgi: Hugging Face Text Generation Inference.; ollama: Ollama.; custom_engine: A standalone inference engine that is not a fork of the runtimes above.; diffusion: An image/video diffusion pipeline rather than an LLM runtime."
+    },
+    "quantization": {
+      "enum": [
+        "bf16",
+        "fp16",
+        "fp8",
+        "int8",
+        "mxfp4",
+        "nvfp4",
+        "awq",
+        "w4a16",
+        "gguf_q4_k_m",
+        "gguf_q4_0_rocmfp4"
+      ],
+      "description": "bf16: BFloat16 weights (unquantized baseline).; fp16: Float16 weights.; fp8: 8-bit floating point weights and/or activations.; int8: 8-bit integer weights (e.g. W8A8 / \"C8\" checkpoints).; mxfp4: OCP Microscaling FP4.; nvfp4: NVIDIA FP4 checkpoint format (may be served via conversion on AMD).; awq: Activation-aware Weight Quantization (typically 4-bit).; w4a16: 4-bit weights, 16-bit activations (GPTQ/compressed-tensors style).; gguf_q4_k_m: GGUF Q4_K_M (llama.cpp).; gguf_q4_0_rocmfp4: GGUF Q4_0 re-packed for the ROCmFP4 llama.cpp path."
+    },
+    "feature": {
+      "enum": [
+        "openai_api",
+        "tool_calling",
+        "vision",
+        "speculative_decoding",
+        "mtp",
+        "dflash",
+        "tensor_parallel",
+        "pipeline_parallel",
+        "p2p",
+        "continuous_batching",
+        "long_context",
+        "kv_compression",
+        "moe_expert_cache",
+        "custom_kernels",
+        "benchmarking",
+        "monitoring",
+        "image_generation"
+      ],
+      "description": "openai_api: Exposes an OpenAI-compatible HTTP endpoint.; tool_calling: Supports tool/function calling through the API.; vision: Serves multimodal (image input) models.; speculative_decoding: Any draft/speculative decoding path.; mtp: Multi-token prediction heads used as a speculative draft.; dflash: DFlash / DFlash2 speculative decoding path.; tensor_parallel: Splits a model across GPUs with tensor parallelism.; pipeline_parallel: Splits a model across GPUs with pipeline parallelism.; p2p: Uses or enables GPU peer-to-peer transfers.; continuous_batching: Serves concurrent requests with continuous batching.; long_context: Documented serving at 128K+ context.; kv_compression: Compresses the KV cache to extend context or save memory.; moe_expert_cache: Keeps only hot MoE experts resident to fit larger MoE models.; custom_kernels: Ships or patches GPU kernels.; benchmarking: Measures endpoint performance and/or quality.; monitoring: Inspects or monitors GPU state.; image_generation: Generates images."
+    },
+    "model_family": {
+      "enum": [
+        "qwen3",
+        "deepseek",
+        "minimax",
+        "llama",
+        "krea"
+      ],
+      "description": "qwen3: Qwen3-series models (including Qwen3.6 / Qwen3.8 releases).; deepseek: DeepSeek models.; minimax: MiniMax models.; llama: Llama-family models.; krea: Krea image models."
+    },
+    "os": {
+      "enum": [
+        "linux",
+        "ubuntu",
+        "proxmox",
+        "windows"
+      ],
+      "description": "linux: Any Linux distribution (unspecified).; ubuntu: Ubuntu.; proxmox: Proxmox VE host with GPU passthrough to a guest.; windows: Microsoft Windows."
+    },
+    "topology": {
+      "enum": [
+        "single_gpu",
+        "dual_gpu",
+        "dual_gpu_p2p",
+        "multi_gpu",
+        "multi_gpu_p2p",
+        "multi_node"
+      ],
+      "description": "single_gpu: One GPU.; dual_gpu: Two GPUs, no P2P requirement.; dual_gpu_p2p: Two GPUs with peer-to-peer enabled.; multi_gpu: Three or more GPUs in one host.; multi_gpu_p2p: Three or more GPUs in one host with peer-to-peer enabled.; multi_node: GPUs spread over more than one host."
+    },
+    "kind": {
+      "enum": [
+        "runtime_fork",
+        "inference_engine",
+        "patch_set",
+        "kernel_library",
+        "docker_image",
+        "launcher",
+        "deployment_guide",
+        "platform_setup",
+        "benchmark_tool",
+        "eval_dataset",
+        "monitoring_tool",
+        "toolbox",
+        "test_harness",
+        "agent_harness",
+        "other"
+      ],
+      "description": "runtime_fork: A fork of an existing inference runtime.; inference_engine: A from-scratch inference engine.; patch_set: Patches applied on top of an existing runtime.; kernel_library: GPU kernel library or kernel patches.; docker_image: A prebuilt container image and its build sources.; launcher: Launch scripts / configs for an existing runtime.; deployment_guide: Step-by-step deployment documentation or stack guide.; platform_setup: Host/platform configuration (virtualization, P2P, topology).; benchmark_tool: A tool that benchmarks endpoints.; eval_dataset: An evaluation dataset or harness for model quality.; monitoring_tool: GPU monitoring or inspection tool.; toolbox: Collection of utility scripts.; test_harness: A harness for testing a model or pipeline on specific hardware.; agent_harness: An agent framework or harness.; other: Anything else."
+    },
+    "category": {
+      "enum": [
+        "inference_servers",
+        "radiance_ecosystem",
+        "kernels",
+        "launchers",
+        "multi_gpu",
+        "benchmarks",
+        "tooling",
+        "agents",
+        "other"
+      ],
+      "description": "inference_servers: Inference Servers & Forks; radiance_ecosystem: vLLM / Radiance Ecosystem; kernels: Kernel & Performance Libraries; launchers: Launchers & Deployment Recipes; multi_gpu: Multi-GPU & Platform Setups; benchmarks: Benchmarks & Evaluation; tooling: Monitoring & Tooling; agents: Agent Harnesses & Dev Tools; other: Other Community Projects"
+    },
+    "maturity": {
+      "enum": [
+        "recommended",
+        "supported",
+        "experimental",
+        "historical",
+        "unverified"
+      ],
+      "description": "recommended: Repeatable setup, recently tested by a maintainer or volunteer, clear documentation.; supported: Active project supported by its author, but environment-sensitive or narrow.; experimental: Promising proof of concept or work in progress; expect manual debugging.; historical: Useful reference, but no longer the suggested default.; unverified: Submitted but not yet reproduced by a maintainer or community volunteer."
+    },
+    "verification_level": {
+      "enum": [
+        "unverified",
+        "author_reported",
+        "community_reproduced",
+        "maintainer_verified"
+      ],
+      "description": "unverified: Nobody outside the author has confirmed the setup or its numbers.; author_reported: The author published the setup and results; not independently reproduced.; community_reproduced: At least one community member reproduced it on their own hardware.; maintainer_verified: A list maintainer reproduced it and recorded the versions used."
+    },
+    "audience": {
+      "enum": [
+        "beginner",
+        "operator",
+        "developer",
+        "kernel_hacker"
+      ],
+      "description": "beginner: Follows a guide; expects copy-paste commands.; operator: Comfortable with Docker, drivers and launch flags.; developer: Comfortable building runtimes from source and applying patches.; kernel_hacker: Comfortable debugging GPU kernels, compilers and ROCm internals."
+    },
+    "benchmark_mode": {
+      "enum": [
+        "single_stream",
+        "batched",
+        "not_reported"
+      ],
+      "description": "single_stream: One request at a time; per-request decode speed.; batched: Several concurrent requests; aggregate throughput.; not_reported: The source did not state concurrency — do not compare with the modes above."
+    },
+    "source_type": {
+      "enum": [
+        "discord",
+        "repository",
+        "reddit",
+        "list_entry"
+      ],
+      "description": "discord: A message in the Launch80 Discord.; repository: The project's own README or results files.; reddit: A Reddit post.; list_entry: The description in this list before structured records existed."
+    }
+  }
+}
