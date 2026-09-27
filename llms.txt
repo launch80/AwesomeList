@@ -9,6 +9,10 @@ software.os as hard gates. Rank by maturity and verification.level, never by the
 A missing field means unknown. Most records are `unverified` (author-reported); say so.
 Cite record IDs. Ask the user for GPU model, GPU count, VRAM and OS if they are missing.
 
+## Guided setup
+
+- [agent-quickstart.md](https://raw.githubusercontent.com/launch80/AwesomeList/main/prompts/agent-quickstart.md): step-by-step instructions for an agent setting up a user's machine (detect, interview, shortlist, plan, execute with approval, verify, report)
+
 ## Machine-readable data
 
 - [catalog.json](https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog.json): every project, benchmark, start-here path, GPU model and vocabulary term

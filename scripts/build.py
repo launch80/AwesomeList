@@ -201,6 +201,9 @@ def render_directory(cat: Catalog) -> tuple[str, str]:
 
 def render_readme(cat: Catalog) -> str:
     template = (ROOT / "docs" / "templates" / "README.md.tmpl").read_text(encoding="utf-8")
+    agent_prompt = (ROOT / "prompts" / "agent-quickstart.md").read_text(encoding="utf-8").rstrip()
+    if "```" in agent_prompt:
+        raise SystemExit("prompts/agent-quickstart.md must not contain ``` fences (it is embedded in a README code block)")
     index, directory = render_directory(cat)
     legend = "\n".join(f"- `{k}` — {v}" for k, v in cat.vocabulary["maturity"].items())
     counts = defaultdict(int)
@@ -218,6 +221,7 @@ def render_readme(cat: Catalog) -> str:
         "index": index,
         "directory": directory.rstrip(),
         "hardware_pages": hw_pages,
+        "agent_prompt": agent_prompt,
     }
     for key, value in replacements.items():
         template = template.replace(f"<!-- {key} -->", value)
@@ -526,6 +530,10 @@ def render_llms_txt(cat: Catalog) -> str:
         "software.os as hard gates. Rank by maturity and verification.level, never by the highest tok/s.",
         "A missing field means unknown. Most records are `unverified` (author-reported); say so.",
         "Cite record IDs. Ask the user for GPU model, GPU count, VRAM and OS if they are missing.",
+        "",
+        "## Guided setup",
+        "",
+        f"- [agent-quickstart.md]({RAW_BASE}/prompts/agent-quickstart.md): step-by-step instructions for an agent setting up a user's machine (detect, interview, shortlist, plan, execute with approval, verify, report)",
         "",
         "## Machine-readable data",
         "",

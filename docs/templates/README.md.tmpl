@@ -20,6 +20,27 @@ member who shared it.</i>
 > `scripts/build.py`. Edit the YAML records, not this file. AI agents: start at
 > [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json).
 
+## Agent quickstart
+
+Using a local AI agent that can run shell commands, such as Claude Code, Codex or Cursor? Paste this
+into it. The agent detects your hardware with read-only commands, asks you only what it can't
+detect, shortlists compatible entries from this catalog, and walks you through setup. It asks for
+your approval before every step that changes your system, then benchmarks the result and drafts a
+reproduction report for you to file.
+
+```text
+Fetch https://raw.githubusercontent.com/launch80/AwesomeList/main/prompts/agent-quickstart.md and follow it to help me set up local inference. Interview me for anything you can't detect.
+```
+
+<details>
+<summary>Agent can't fetch URLs? Paste the full prompt instead.</summary>
+
+```text
+<!-- agent_prompt -->
+```
+
+</details>
+
 ## Start here
 
 Pick the row closest to your goal. Every entry has a **card** with hardware, software, models,
@@ -60,6 +81,7 @@ versions, command) the source actually reported.
 
 | Resource | What it is |
 |---|---|
+| [`prompts/agent-quickstart.md`](prompts/agent-quickstart.md) | Guided setup prompt: detect → interview → shortlist → plan → install → verify |
 | [`llms.txt`](llms.txt) | Short index of everything below, for AI systems |
 | [`llms-full.txt`](llms-full.txt) | The full catalog as compact, low-noise text |
 | [`catalog.json`](catalog.json) | Generated index of all projects, benchmarks, paths and vocabulary |

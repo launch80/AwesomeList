@@ -22,7 +22,8 @@ If you'd rather not deal with git, post in the Discord or open an
 `catalog/` is the source of truth. `README.md`, `catalog.json`, `llms.txt`, `llms-full.txt`,
 `docs/projects/`, `docs/hardware/`, `docs/benchmarks.md` and `docs/glossary.md` are **generated**.
 Don't edit them by hand; CI fails if they drift from the catalog. The README's fixed prose
-(intro, section text) lives in `docs/templates/README.md.tmpl`.
+(intro, section text) lives in `docs/templates/README.md.tmpl`, and the Agent quickstart prompt
+lives in `prompts/agent-quickstart.md`. Rebuild after editing either one.
 
 ```
 catalog/

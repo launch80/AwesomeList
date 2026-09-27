@@ -32,6 +32,7 @@ jobs:
           args: >-
             --no-progress --accept 200,206,429
             --exclude 'issues/new'
+            --exclude 'raw.githubusercontent.com/launch80/AwesomeList'
             README.md CONTRIBUTING.md 'docs/**/*.md' 'catalog/**/*.yaml' catalog/benchmarks/benchmark-results.jsonl
           fail: true
         env:
