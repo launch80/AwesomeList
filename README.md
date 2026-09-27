@@ -22,7 +22,7 @@ member who shared it.</i>
 
 ## Agent quickstart
 
-Using a local AI agent that can run shell commands, such as Claude Code, Codex or Cursor? Paste this
+Using a local AI agent that can run shell commands? Paste this
 into it. The agent detects your hardware with read-only commands, asks you only what it can't
 detect, shortlists compatible entries from this catalog, and walks you through setup. It asks for
 your approval before every step that changes your system, then benchmarks the result and drafts a
