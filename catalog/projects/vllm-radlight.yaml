@@ -1,0 +1,28 @@
+id: vllm-radlight
+name: hifi/vllm-radlight
+tagline: Lightweight vLLM variant; median decode above 70 t/s on one R9700 with Qwen3.8-27B at 192K context.
+use_it_if: You run a single R9700 and want long-context Qwen serving from a lighter vLLM variant with published bench results.
+kind: runtime_fork
+categories: [radiance_ecosystem, inference_servers]
+maturity: unverified
+audience: developer
+links:
+  repository: https://codeberg.org/hifi/vllm-radlight
+people:
+  builders: [hifi]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+  gpu_count: { min: 1 }
+software:
+  runtimes: [vllm]
+provides: [openai_api, long_context]
+supports:
+  model_families: [qwen3]
+  models: [Qwen3.8-27B]
+  topologies: [single_gpu]
+evidence: [radlight-r9700x1-qwen38-27b-192k]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"

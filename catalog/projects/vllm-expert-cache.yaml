@@ -1,0 +1,21 @@
+id: vllm-expert-cache
+name: davetha/vllm-expert-cache
+tagline: LRU/LFU expert-cache patch for vLLM so MoE models that would not fit can run on smaller rigs.
+use_it_if: You want to serve a MoE model that does not fit in your VRAM and can accept some speed loss.
+kind: patch_set
+categories: [kernels]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/davetha/vllm-expert-cache
+people:
+  builders: [davetha]
+hardware:
+  vendors: [amd, intel]
+software:
+  runtimes: [vllm]
+provides: [moe_expert_cache, openai_api]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"
+notes: Includes porting docs for Intel. Target GPU architectures not yet recorded.

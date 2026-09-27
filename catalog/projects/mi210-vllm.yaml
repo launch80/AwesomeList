@@ -1,0 +1,28 @@
+id: mi210-vllm
+name: davetha/mi210-vllm
+tagline: vLLM build with the AITER patches for MI210, including a full INT8 Qwen3.8-27B recipe.
+use_it_if: You have an MI210 and want a ready docker-run recipe for INT8 Qwen serving.
+kind: runtime_fork
+categories: [inference_servers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/davetha/mi210-vllm
+people:
+  builders: [davetha]
+hardware:
+  vendors: [amd]
+  architectures: [cdna2]
+  gpu_models: [mi210]
+software:
+  runtimes: [vllm]
+  container: true
+  based_on: [aiter-cdna2]
+provides: [openai_api, custom_kernels]
+supports:
+  model_families: [qwen3]
+  models: [Qwen3.8-27B INT8]
+  quantizations: [int8]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

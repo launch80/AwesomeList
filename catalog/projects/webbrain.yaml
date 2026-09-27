@@ -1,0 +1,18 @@
+id: webbrain
+name: webbrain-one/webbrain
+tagline: "Community-shared knowledge project mentioned in #hang-out."
+use_it_if: You are curious about community knowledge-base projects.
+kind: other
+categories: [other]
+maturity: unverified
+links:
+  repository: https://github.com/webbrain-one/webbrain
+people:
+  builders: [webbrain-one]
+  shared_by: [xza.nomad]
+hardware:
+  agnostic: true
+verification:
+  level: unverified
+  listed_since: "2026-09-24"
+notes: Builder recorded by GitHub owner; Discord handle not yet recorded.

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/benchmark.schema.json",
+  "title": "Launch80 benchmark record",
+  "description": "One measured result (one line of catalog/benchmarks/benchmark-results.jsonl). Omit what the source did not report; the generated tables show gaps as 'not reported'.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "project", "mode", "hardware", "model", "metrics", "source"],
+  "properties": {
+    "id": { "$ref": "vocabulary.schema.json#/$defs/id" },
+    "project": { "$ref": "vocabulary.schema.json#/$defs/id", "description": "Catalog project ID the result was produced with." },
+    "recipe": { "$ref": "vocabulary.schema.json#/$defs/id" },
+    "mode": { "$ref": "vocabulary.schema.json#/$defs/benchmark_mode" },
+    "hardware": {
+      "type": "object", "additionalProperties": false, "required": ["gpu_model"],
+      "properties": {
+        "gpu_model": { "type": "string", "description": "ID from catalog/compatibility/gpu-models.yaml." },
+        "gpu_count": { "type": "integer", "minimum": 1 },
+        "interconnect": { "type": "string" },
+        "p2p": { "type": "boolean" },
+        "host_cpu": { "type": "string" },
+        "system_ram_gb": { "type": "number" }
+      }
+    },
+    "platform": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "os": { "type": "string" },
+        "kernel": { "type": "string" },
+        "driver": { "type": "string" },
+        "rocm": { "type": "string" }
+      }
+    },
+    "runtime": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "name": { "$ref": "vocabulary.schema.json#/$defs/runtime" },
+        "version": { "type": "string" },
+        "commit": { "type": "string" },
+        "speculative": { "type": "string", "description": "Draft method and depth, e.g. 'MTP=3'." }
+      }
+    },
+    "model": {
+      "type": "object", "additionalProperties": false, "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "description": "Model as named by the source." },
+        "artifact": { "type": "string", "description": "Exact Hugging Face repo or GGUF file." },
+        "family": { "$ref": "vocabulary.schema.json#/$defs/model_family" },
+        "quantization": { "$ref": "vocabulary.schema.json#/$defs/quantization" }
+      }
+    },
+    "workload": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "context_length": { "type": "integer", "minimum": 1 },
+        "prompt_tokens": { "type": "integer", "minimum": 1 },
+        "output_tokens": { "type": "integer", "minimum": 1 },
+        "concurrency": { "type": "integer", "minimum": 1 },
+        "tool": { "type": "string", "description": "Benchmark tool and profile, e.g. 'BetterBench --quick'." }
+      }
+    },
+    "metrics": {
+      "type": "object", "additionalProperties": false, "minProperties": 1,
+      "properties": {
+        "decode_tok_s": { "type": "number", "description": "Per-request decode speed (single_stream) or aggregate decode (batched)." },
+        "prefill_tok_s": { "type": "number" },
+        "ttft_ms": { "type": "number" },
+        "latency_p50_ms": { "type": "number" },
+        "latency_p95_ms": { "type": "number" },
+        "approximate": { "type": "boolean", "description": "True when the source gave '~' or '>' figures." },
+        "statistic": { "type": "string", "enum": ["mean", "median", "peak", "unspecified"] }
+      }
+    },
+    "command": { "type": "string", "description": "Copyable launch + benchmark command." },
+    "measured_on": { "type": "string", "format": "date" },
+    "source": {
+      "type": "object", "additionalProperties": false, "required": ["type"],
+      "properties": {
+        "type": { "$ref": "vocabulary.schema.json#/$defs/source_type" },
+        "url": { "type": "string", "format": "uri" },
+        "recorded_on": { "type": "string", "format": "date" }
+      }
+    },
+    "reproduced_by": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "string" }
+  }
+}

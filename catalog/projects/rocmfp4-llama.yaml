@@ -1,0 +1,28 @@
+id: rocmfp4-llama
+name: charlie12345/rocmfp4-llama
+tagline: llama.cpp with ROCmFP4 support for RDNA2 and Strix — the recipe V620 owners use.
+use_it_if: You have a V620 (RDNA2) or a Strix APU and want 4-bit llama.cpp serving with an MTP draft.
+kind: runtime_fork
+categories: [inference_servers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/charlie12345/rocmfp4-llama
+people:
+  builders: [charlie12345]
+  shared_by: [celer]
+hardware:
+  vendors: [amd]
+  architectures: [rdna2, rdna3_5]
+  gpu_models: [v620, strix_halo]
+software:
+  runtimes: [llama_cpp]
+provides: [openai_api, mtp, speculative_decoding]
+supports:
+  quantizations: [gguf_q4_0_rocmfp4]
+quick_start: |
+  ./scripts/build-rdna2.sh
+  # then serve a Q4_0_ROCMFP4 GGUF with an MTP draft model
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

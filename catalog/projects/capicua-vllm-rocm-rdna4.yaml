@@ -1,0 +1,29 @@
+id: capicua-vllm-rocm-rdna4
+name: Capicua25x/vllm-rocm-rdna4
+tagline: RDNA4 vLLM fork — Qwen 3.8 27B MXFP4 at 200K context with MTP on 2× RX 9070 XT.
+use_it_if: You have RDNA4 cards (RX 9070 XT or R9700-class) and want long-context MXFP4 serving with MTP.
+kind: runtime_fork
+categories: [inference_servers]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/Capicua25x/vllm-rocm-rdna4
+people:
+  builders: [capicua25x]
+  shared_by: [Darkmoon]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [rx9070xt, r9700]
+software:
+  runtimes: [vllm]
+provides: [openai_api, mtp, speculative_decoding, long_context, continuous_batching]
+supports:
+  model_families: [qwen3]
+  models: [Qwen 3.8 27B]
+  quantizations: [mxfp4]
+  topologies: [dual_gpu]
+evidence: [capicua-9070xt-x2-qwen38-27b-mxfp4-single, capicua-9070xt-x2-qwen38-27b-mxfp4-batched]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"

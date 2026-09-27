@@ -1,0 +1,17 @@
+id: clown-circus
+name: cztomsik/clown-circus
+tagline: Minimal agent harness where the model writes its own prompts, with reasoning-trace inspection.
+use_it_if: You are experimenting with agent prompting and want to reduce over-thinking.
+kind: agent_harness
+categories: [agents]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/cztomsik/clown-circus
+people:
+  builders: [cztomsik]
+hardware:
+  agnostic: true
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

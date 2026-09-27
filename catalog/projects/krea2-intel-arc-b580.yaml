@@ -1,0 +1,25 @@
+id: krea2-intel-arc-b580
+name: davetha/krea2-intel-arc-b580
+tagline: Krea2 image-model test harness on Intel Arc B580.
+use_it_if: You own an Intel Arc card and want a working datapoint for running a modern model on it.
+kind: test_harness
+categories: [inference_servers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/davetha/krea2-intel-arc-b580
+people:
+  builders: [davetha]
+hardware:
+  vendors: [intel]
+  architectures: [intel_arc]
+  gpu_models: [arc_b580]
+software:
+  runtimes: [diffusion]
+provides: [image_generation]
+supports:
+  model_families: [krea]
+not_suitable_for: [LLM serving — this is an image-model harness, not vLLM or llama.cpp]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

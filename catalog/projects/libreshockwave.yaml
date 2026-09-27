@@ -1,0 +1,17 @@
+id: libreshockwave
+name: LibreShockwave/LibreShockwave
+tagline: A Ruffle-equivalent for Adobe Shockwave, running old Shockwave content in modern browsers.
+use_it_if: You want to run legacy Shockwave content in a modern browser.
+kind: other
+categories: [other]
+maturity: unverified
+audience: beginner
+links:
+  repository: https://github.com/LibreShockwave/LibreShockwave
+people:
+  builders: [Alex]
+hardware:
+  agnostic: true
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

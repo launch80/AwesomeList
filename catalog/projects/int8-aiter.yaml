@@ -1,0 +1,23 @@
+id: int8-aiter
+name: curvedinf/int8-aiter
+tagline: The INT8 AITER kernels behind the 4× MI100 972 t/s result.
+use_it_if: You are building INT8 inference on CDNA and want the kernels without the full vLLM fork.
+kind: kernel_library
+categories: [inference_servers, kernels]
+maturity: unverified
+audience: kernel_hacker
+links:
+  repository: https://github.com/curvedinf/int8-aiter
+people:
+  builders: [curvedinf]
+  shared_by: [mldatascientist]
+hardware:
+  vendors: [amd]
+  architectures: [cdna]
+  gpu_models: [mi100]
+provides: [custom_kernels]
+supports:
+  quantizations: [int8]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

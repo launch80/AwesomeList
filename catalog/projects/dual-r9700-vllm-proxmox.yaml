@@ -1,0 +1,28 @@
+id: dual-r9700-vllm-proxmox
+name: bkvargyas/dual-r9700-vllm-proxmox
+tagline: 2× R9700 on Proxmox with PCI passthrough and P2P on EPYC, with RCCL patches and benchmarks.
+use_it_if: You are building a dual-R9700 server under Proxmox and need working P2P inside the VM.
+kind: platform_setup
+categories: [multi_gpu]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/bkvargyas/dual-r9700-vllm-proxmox
+people:
+  builders: [bkvargyas]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+  gpu_count: { min: 2 }
+  host_notes: EPYC host.
+software:
+  runtimes: [vllm]
+  os: [proxmox]
+provides: [p2p, openai_api, tensor_parallel]
+supports:
+  topologies: [dual_gpu_p2p]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"
+notes: Includes RCCL patches that fix P2P bugs and full benchmark results (not yet normalized into benchmark records).

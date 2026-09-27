@@ -1,0 +1,80 @@
+# GPU models referenced by the catalog. The selector resolves a reader's GPU to its
+# architecture and VRAM from this table, so a project only needs to declare architectures.
+- id: r9700
+  name: Radeon AI PRO R9700
+  vendor: amd
+  architecture: rdna4
+  gfx_target: gfx1201
+  vram_gb: 32
+- id: rx9070xt
+  name: Radeon RX 9070 XT
+  vendor: amd
+  architecture: rdna4
+  gfx_target: gfx1201
+  vram_gb: 16
+- id: rx7900xtx
+  name: Radeon RX 7900 XTX
+  vendor: amd
+  architecture: rdna3
+  gfx_target: gfx1100
+  vram_gb: 24
+- id: rx7900xt
+  name: Radeon RX 7900 XT
+  vendor: amd
+  architecture: rdna3
+  gfx_target: gfx1100
+  vram_gb: 20
+- id: rx7900_series
+  name: Radeon RX 7900 (XTX or XT, unspecified)
+  vendor: amd
+  architecture: rdna3
+  gfx_target: gfx1100
+  vram_gb: null  # 24 GB (XTX) or 20 GB (XT)
+- id: v620
+  name: Radeon Pro V620
+  vendor: amd
+  architecture: rdna2
+  gfx_target: gfx1030
+  vram_gb: 32
+- id: strix_halo
+  name: Ryzen AI Max (Strix Halo) iGPU
+  vendor: amd
+  architecture: rdna3_5
+  gfx_target: gfx1151
+  vram_gb: null  # shared system memory; depends on configuration
+- id: mi100
+  name: Instinct MI100
+  vendor: amd
+  architecture: cdna
+  gfx_target: gfx908
+  vram_gb: 32
+- id: mi210
+  name: Instinct MI210
+  vendor: amd
+  architecture: cdna2
+  gfx_target: gfx90a
+  vram_gb: 64
+- id: mi250x
+  name: Instinct MI250X
+  vendor: amd
+  architecture: cdna2
+  gfx_target: gfx90a
+  vram_gb: 128
+- id: arc_b580
+  name: Arc B580
+  vendor: intel
+  architecture: intel_arc
+  gfx_target: null
+  vram_gb: 12
+- id: rtx_pro_6000
+  name: RTX Pro 6000 Blackwell
+  vendor: nvidia
+  architecture: nvidia_blackwell
+  gfx_target: null
+  vram_gb: 96
+- id: dgx_spark
+  name: DGX Spark (GB10)
+  vendor: nvidia
+  architecture: nvidia_blackwell
+  gfx_target: null
+  vram_gb: 128  # unified memory

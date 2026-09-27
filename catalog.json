@@ -1,0 +1,2562 @@
+{
+  "name": "Awesome Launch80 List",
+  "description": "Community-owned inference repos from the Launch80 Discord, as structured records.",
+  "schema_version": 1,
+  "schemas": {
+    "project": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/project.schema.json",
+    "recipe": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/recipe.schema.json",
+    "benchmark": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/benchmark.schema.json",
+    "paths": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/paths.schema.json",
+    "gpu-models": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/gpu-models.schema.json",
+    "vocabulary": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/vocabulary.schema.json"
+  },
+  "guidance": "Hard requirements (hardware.architectures, hardware.gpu_count.min, hardware.min_vram_gb, software.os, conflicts) are binary gates: never recommend a record whose gates the user fails. Rank the rest by maturity and verification.level, not by the largest tok/s number. Cite record IDs and state verification.level. A missing field means unknown, not unsupported.",
+  "vocabulary": {
+    "vendor": {
+      "amd": "AMD Radeon / Instinct GPUs (ROCm stack).",
+      "nvidia": "NVIDIA GPUs (CUDA stack).",
+      "intel": "Intel Arc / Data Center GPUs (oneAPI / XPU stack)."
+    },
+    "architecture": {
+      "rdna2": "AMD RDNA2 consumer/workstation GPUs (gfx103x), e.g. Radeon Pro V620.",
+      "rdna3": "AMD RDNA3 consumer/workstation GPUs (gfx110x), e.g. RX 7900 XTX.",
+      "rdna3_5": "AMD RDNA3.5 APUs (gfx115x), e.g. Strix Halo / Strix Point.",
+      "rdna4": "AMD RDNA4 GPUs (gfx120x), e.g. Radeon AI PRO R9700, RX 9070 XT.",
+      "cdna": "AMD CDNA1 datacenter GPUs (gfx908), e.g. Instinct MI100.",
+      "cdna2": "AMD CDNA2 datacenter GPUs (gfx90a), e.g. Instinct MI210 / MI250X.",
+      "cdna3": "AMD CDNA3 datacenter GPUs (gfx942), e.g. Instinct MI300X.",
+      "intel_arc": "Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580.",
+      "nvidia_blackwell": "NVIDIA Blackwell GPUs, e.g. RTX Pro 6000, DGX Spark (GB10)."
+    },
+    "runtime": {
+      "vllm": "vLLM or a vLLM fork (including the Radiance image).",
+      "sglang": "SGLang or an SGLang fork.",
+      "llama_cpp": "llama.cpp or a llama.cpp fork.",
+      "tgi": "Hugging Face Text Generation Inference.",
+      "ollama": "Ollama.",
+      "custom_engine": "A standalone inference engine that is not a fork of the runtimes above.",
+      "diffusion": "An image/video diffusion pipeline rather than an LLM runtime."
+    },
+    "quantization": {
+      "bf16": "BFloat16 weights (unquantized baseline).",
+      "fp16": "Float16 weights.",
+      "fp8": "8-bit floating point weights and/or activations.",
+      "int8": "8-bit integer weights (e.g. W8A8 / \"C8\" checkpoints).",
+      "mxfp4": "OCP Microscaling FP4.",
+      "nvfp4": "NVIDIA FP4 checkpoint format (may be served via conversion on AMD).",
+      "awq": "Activation-aware Weight Quantization (typically 4-bit).",
+      "w4a16": "4-bit weights, 16-bit activations (GPTQ/compressed-tensors style).",
+      "gguf_q4_k_m": "GGUF Q4_K_M (llama.cpp).",
+      "gguf_q4_0_rocmfp4": "GGUF Q4_0 re-packed for the ROCmFP4 llama.cpp path."
+    },
+    "feature": {
+      "openai_api": "Exposes an OpenAI-compatible HTTP endpoint.",
+      "tool_calling": "Supports tool/function calling through the API.",
+      "vision": "Serves multimodal (image input) models.",
+      "speculative_decoding": "Any draft/speculative decoding path.",
+      "mtp": "Multi-token prediction heads used as a speculative draft.",
+      "dflash": "DFlash / DFlash2 speculative decoding path.",
+      "tensor_parallel": "Splits a model across GPUs with tensor parallelism.",
+      "pipeline_parallel": "Splits a model across GPUs with pipeline parallelism.",
+      "p2p": "Uses or enables GPU peer-to-peer transfers.",
+      "continuous_batching": "Serves concurrent requests with continuous batching.",
+      "long_context": "Documented serving at 128K+ context.",
+      "kv_compression": "Compresses the KV cache to extend context or save memory.",
+      "moe_expert_cache": "Keeps only hot MoE experts resident to fit larger MoE models.",
+      "custom_kernels": "Ships or patches GPU kernels.",
+      "benchmarking": "Measures endpoint performance and/or quality.",
+      "monitoring": "Inspects or monitors GPU state.",
+      "image_generation": "Generates images."
+    },
+    "model_family": {
+      "qwen3": "Qwen3-series models (including Qwen3.6 / Qwen3.8 releases).",
+      "deepseek": "DeepSeek models.",
+      "minimax": "MiniMax models.",
+      "llama": "Llama-family models.",
+      "krea": "Krea image models."
+    },
+    "os": {
+      "linux": "Any Linux distribution (unspecified).",
+      "ubuntu": "Ubuntu.",
+      "proxmox": "Proxmox VE host with GPU passthrough to a guest.",
+      "windows": "Microsoft Windows."
+    },
+    "topology": {
+      "single_gpu": "One GPU.",
+      "dual_gpu": "Two GPUs, no P2P requirement.",
+      "dual_gpu_p2p": "Two GPUs with peer-to-peer enabled.",
+      "multi_gpu": "Three or more GPUs in one host.",
+      "multi_gpu_p2p": "Three or more GPUs in one host with peer-to-peer enabled.",
+      "multi_node": "GPUs spread over more than one host."
+    },
+    "kind": {
+      "runtime_fork": "A fork of an existing inference runtime.",
+      "inference_engine": "A from-scratch inference engine.",
+      "patch_set": "Patches applied on top of an existing runtime.",
+      "kernel_library": "GPU kernel library or kernel patches.",
+      "docker_image": "A prebuilt container image and its build sources.",
+      "launcher": "Launch scripts / configs for an existing runtime.",
+      "deployment_guide": "Step-by-step deployment documentation or stack guide.",
+      "platform_setup": "Host/platform configuration (virtualization, P2P, topology).",
+      "benchmark_tool": "A tool that benchmarks endpoints.",
+      "eval_dataset": "An evaluation dataset or harness for model quality.",
+      "monitoring_tool": "GPU monitoring or inspection tool.",
+      "toolbox": "Collection of utility scripts.",
+      "test_harness": "A harness for testing a model or pipeline on specific hardware.",
+      "agent_harness": "An agent framework or harness.",
+      "other": "Anything else."
+    },
+    "category": {
+      "inference_servers": "Inference Servers & Forks",
+      "radiance_ecosystem": "vLLM / Radiance Ecosystem",
+      "kernels": "Kernel & Performance Libraries",
+      "launchers": "Launchers & Deployment Recipes",
+      "multi_gpu": "Multi-GPU & Platform Setups",
+      "benchmarks": "Benchmarks & Evaluation",
+      "tooling": "Monitoring & Tooling",
+      "agents": "Agent Harnesses & Dev Tools",
+      "other": "Other Community Projects"
+    },
+    "maturity": {
+      "recommended": "Repeatable setup, recently tested by a maintainer or volunteer, clear documentation.",
+      "supported": "Active project supported by its author, but environment-sensitive or narrow.",
+      "experimental": "Promising proof of concept or work in progress; expect manual debugging.",
+      "historical": "Useful reference, but no longer the suggested default.",
+      "unverified": "Submitted but not yet reproduced by a maintainer or community volunteer."
+    },
+    "verification_level": {
+      "unverified": "Nobody outside the author has confirmed the setup or its numbers.",
+      "author_reported": "The author published the setup and results; not independently reproduced.",
+      "community_reproduced": "At least one community member reproduced it on their own hardware.",
+      "maintainer_verified": "A list maintainer reproduced it and recorded the versions used."
+    },
+    "audience": {
+      "beginner": "Follows a guide; expects copy-paste commands.",
+      "operator": "Comfortable with Docker, drivers and launch flags.",
+      "developer": "Comfortable building runtimes from source and applying patches.",
+      "kernel_hacker": "Comfortable debugging GPU kernels, compilers and ROCm internals."
+    },
+    "benchmark_mode": {
+      "single_stream": "One request at a time; per-request decode speed.",
+      "batched": "Several concurrent requests; aggregate throughput.",
+      "not_reported": "The source did not state concurrency — do not compare with the modes above."
+    },
+    "source_type": {
+      "discord": "A message in the Launch80 Discord.",
+      "repository": "The project's own README or results files.",
+      "reddit": "A Reddit post.",
+      "list_entry": "The description in this list before structured records existed."
+    }
+  },
+  "gpu_models": [
+    {
+      "id": "r9700",
+      "name": "Radeon AI PRO R9700",
+      "vendor": "amd",
+      "architecture": "rdna4",
+      "gfx_target": "gfx1201",
+      "vram_gb": 32
+    },
+    {
+      "id": "rx9070xt",
+      "name": "Radeon RX 9070 XT",
+      "vendor": "amd",
+      "architecture": "rdna4",
+      "gfx_target": "gfx1201",
+      "vram_gb": 16
+    },
+    {
+      "id": "rx7900xtx",
+      "name": "Radeon RX 7900 XTX",
+      "vendor": "amd",
+      "architecture": "rdna3",
+      "gfx_target": "gfx1100",
+      "vram_gb": 24
+    },
+    {
+      "id": "rx7900xt",
+      "name": "Radeon RX 7900 XT",
+      "vendor": "amd",
+      "architecture": "rdna3",
+      "gfx_target": "gfx1100",
+      "vram_gb": 20
+    },
+    {
+      "id": "rx7900_series",
+      "name": "Radeon RX 7900 (XTX or XT, unspecified)",
+      "vendor": "amd",
+      "architecture": "rdna3",
+      "gfx_target": "gfx1100",
+      "vram_gb": null
+    },
+    {
+      "id": "v620",
+      "name": "Radeon Pro V620",
+      "vendor": "amd",
+      "architecture": "rdna2",
+      "gfx_target": "gfx1030",
+      "vram_gb": 32
+    },
+    {
+      "id": "strix_halo",
+      "name": "Ryzen AI Max (Strix Halo) iGPU",
+      "vendor": "amd",
+      "architecture": "rdna3_5",
+      "gfx_target": "gfx1151",
+      "vram_gb": null
+    },
+    {
+      "id": "mi100",
+      "name": "Instinct MI100",
+      "vendor": "amd",
+      "architecture": "cdna",
+      "gfx_target": "gfx908",
+      "vram_gb": 32
+    },
+    {
+      "id": "mi210",
+      "name": "Instinct MI210",
+      "vendor": "amd",
+      "architecture": "cdna2",
+      "gfx_target": "gfx90a",
+      "vram_gb": 64
+    },
+    {
+      "id": "mi250x",
+      "name": "Instinct MI250X",
+      "vendor": "amd",
+      "architecture": "cdna2",
+      "gfx_target": "gfx90a",
+      "vram_gb": 128
+    },
+    {
+      "id": "arc_b580",
+      "name": "Arc B580",
+      "vendor": "intel",
+      "architecture": "intel_arc",
+      "gfx_target": null,
+      "vram_gb": 12
+    },
+    {
+      "id": "rtx_pro_6000",
+      "name": "RTX Pro 6000 Blackwell",
+      "vendor": "nvidia",
+      "architecture": "nvidia_blackwell",
+      "gfx_target": null,
+      "vram_gb": 96
+    },
+    {
+      "id": "dgx_spark",
+      "name": "DGX Spark (GB10)",
+      "vendor": "nvidia",
+      "architecture": "nvidia_blackwell",
+      "gfx_target": null,
+      "vram_gb": 128
+    }
+  ],
+  "paths": [
+    {
+      "id": "r9700-endpoint",
+      "i_want_to": "Run a local OpenAI-compatible endpoint on one R9700",
+      "hardware": "1× Radeon AI PRO R9700",
+      "architectures": [
+        "rdna4"
+      ],
+      "typical_reader": "Developer building against an API",
+      "start_with": [
+        "zzpanic-gfx1201-launchers"
+      ],
+      "then": [
+        "malicz-gfx1201-launchers",
+        "vllm-radiance"
+      ],
+      "why": "The most-recommended starting point in #r9700; malicz adds a full Docker + MXFP4 setup on the Radiance base."
+    },
+    {
+      "id": "r9700-throughput",
+      "i_want_to": "Maximize throughput on R9700s",
+      "hardware": "1–2× Radeon AI PRO R9700",
+      "architectures": [
+        "rdna4"
+      ],
+      "typical_reader": "Performance-focused builder",
+      "priority": "throughput",
+      "start_with": [
+        "vllm-mxfp4"
+      ],
+      "then": [
+        "magiccodingman-vllm-radiance",
+        "vllm-radlight"
+      ],
+      "why": "Highest prefill/decode numbers reported for R9700 in this list.",
+      "caveat": "Numbers are author-reported and concurrency is not stated; benchmark your own endpoint before comparing."
+    },
+    {
+      "id": "rdna4-sglang",
+      "i_want_to": "Use SGLang instead of vLLM on RDNA4",
+      "hardware": "2× Radeon AI PRO R9700",
+      "architectures": [
+        "rdna4"
+      ],
+      "typical_reader": "Operator comparing runtimes",
+      "start_with": [
+        "sglang-2x-r9700"
+      ],
+      "why": "The community's starting point for SGLang on RDNA4."
+    },
+    {
+      "id": "rdna3-single-card",
+      "i_want_to": "Run quantized models on one RX 7900 XTX",
+      "hardware": "1× RX 7900 XTX (24 GB)",
+      "architectures": [
+        "rdna3"
+      ],
+      "typical_reader": "Home-lab user",
+      "start_with": [
+        "llama-cpp-rdna-boosts"
+      ],
+      "then": [
+        "hipengine"
+      ],
+      "why": "The best llama.cpp uplift many 7900 XTX owners saw; hipEngine fits up to 232K context at Q4_K_M."
+    },
+    {
+      "id": "rdna2-v620",
+      "i_want_to": "Serve models on Radeon Pro V620s",
+      "hardware": "1–4× Radeon Pro V620",
+      "architectures": [
+        "rdna2"
+      ],
+      "typical_reader": "Home-lab / used-server builder",
+      "start_with": [
+        "rocmfp4-llama"
+      ],
+      "then": [
+        "vllm-rdna2-recipe",
+        "vllm-rdna2-qwen",
+        "v620-toolbox"
+      ],
+      "why": "rocmfp4-llama is the recipe members use on V620; the vLLM path suits multi-card rigs."
+    },
+    {
+      "id": "moe-small-rig",
+      "i_want_to": "Serve a MoE model that does not fit in VRAM",
+      "hardware": "Any vLLM-capable rig",
+      "typical_reader": "Advanced inference user",
+      "start_with": [
+        "vllm-expert-cache"
+      ],
+      "why": "Only expert-offload project listed.",
+      "caveat": "Target GPU architectures are not yet recorded."
+    },
+    {
+      "id": "cdna-datacenter",
+      "i_want_to": "Run fast inference on MI210 / MI100",
+      "hardware": "Instinct MI210 (CDNA2) or MI100 (CDNA1)",
+      "architectures": [
+        "cdna",
+        "cdna2"
+      ],
+      "typical_reader": "Datacenter / used-accelerator owner",
+      "start_with": [
+        "mi210-llm-stack"
+      ],
+      "then": [
+        "mi210-vllm",
+        "aiter-cdna2",
+        "int8-vllm"
+      ],
+      "why": "mi210-llm-stack maps models to serving tiers first; int8-vllm is the MI100 path."
+    },
+    {
+      "id": "multi-gpu-build",
+      "i_want_to": "Build a multi-GPU box with working P2P",
+      "hardware": "2× GPUs on an EPYC-class host",
+      "architectures": [
+        "rdna4",
+        "rdna3"
+      ],
+      "typical_reader": "Workstation or server builder",
+      "start_with": [
+        "dual-r9700-vllm-proxmox"
+      ],
+      "then": [
+        "vllm-radiance-p2p"
+      ],
+      "why": "Documents passthrough, P2P and the RCCL patches needed to make P2P work; vllm-radiance-p2p is the RDNA3 equivalent."
+    },
+    {
+      "id": "benchmark-endpoint",
+      "i_want_to": "Benchmark an existing endpoint",
+      "hardware": "Any",
+      "typical_reader": "Operator comparing configurations",
+      "start_with": [
+        "betterbench"
+      ],
+      "why": "The community's go-to benchmark suite; use it so your numbers are comparable to others'."
+    },
+    {
+      "id": "intel-arc",
+      "i_want_to": "Use an Intel Arc GPU",
+      "hardware": "Arc B580",
+      "architectures": [
+        "intel_arc"
+      ],
+      "typical_reader": "Intel GPU owner",
+      "start_with": [
+        "krea2-intel-arc-b580"
+      ],
+      "then": [
+        "vllm-expert-cache"
+      ],
+      "why": "Only Arc datapoint listed; vllm-expert-cache includes Intel porting docs.",
+      "caveat": "No LLM-serving recipe for Arc is listed yet."
+    },
+    {
+      "id": "monitor-gpus",
+      "i_want_to": "Monitor my GPUs while tuning",
+      "hardware": "R9700 or V620",
+      "architectures": [
+        "rdna4",
+        "rdna2"
+      ],
+      "typical_reader": "Anyone running a rig",
+      "start_with": [
+        "r9v"
+      ],
+      "then": [
+        "v620-toolbox"
+      ],
+      "why": "R9V is actively maintained in-server for the R9700."
+    }
+  ],
+  "projects": [
+    {
+      "id": "aiter-cdna2",
+      "name": "davetha/aiter-cdna2",
+      "tagline": "Binary-patches AMD AITER (officially CDNA3+) to unlock its fast paths on CDNA2.",
+      "use_it_if": "You have MI210/MI250X-class GPUs and want the AITER kernels that most MI210 performance work depends on.",
+      "kind": "kernel_library",
+      "categories": [
+        "kernels"
+      ],
+      "maturity": "unverified",
+      "audience": "kernel_hacker",
+      "links": {
+        "repository": "https://github.com/davetha/aiter-cdna2"
+      },
+      "people": {
+        "builders": [
+          "davetha"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "cdna2"
+        ],
+        "gpu_models": [
+          "mi210",
+          "mi250x"
+        ]
+      },
+      "provides": [
+        "custom_kernels"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/aiter-cdna2.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/aiter-cdna2.yaml"
+    },
+    {
+      "id": "alloyium",
+      "name": "Alloyium-ai/alloyium",
+      "tagline": "Real-time communication between agents using existing Claude/ChatGPT subscriptions.",
+      "use_it_if": "You want multiple agents on your existing subscriptions to talk to each other in real time.",
+      "kind": "agent_harness",
+      "categories": [
+        "agents"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/Alloyium-ai/alloyium"
+      },
+      "people": {
+        "builders": [
+          "atcsecure"
+        ]
+      },
+      "hardware": {
+        "agnostic": true
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/alloyium.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/alloyium.yaml"
+    },
+    {
+      "id": "betterbench",
+      "name": "GGZ14/BetterBench",
+      "tagline": "The community's go-to benchmark suite for vLLM and llama.cpp endpoints.",
+      "use_it_if": "You have a running endpoint and want numbers comparable with what others post in the Discord.",
+      "kind": "benchmark_tool",
+      "categories": [
+        "benchmarks"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/GGZ14/BetterBench"
+      },
+      "people": {
+        "builders": [
+          "The_Candle_Watcher"
+        ]
+      },
+      "hardware": {
+        "agnostic": true
+      },
+      "software": {
+        "runtimes": [
+          "vllm",
+          "llama_cpp"
+        ]
+      },
+      "provides": [
+        "benchmarking"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Includes a graded code corpus, --runs N, and --quick mode.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/betterbench.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/betterbench.yaml"
+    },
+    {
+      "id": "bmorgan-gfx1201-launchers",
+      "name": "BMorgan1296/qwen3.6-vllm-gfx1201-launchers",
+      "tagline": "Fork of the zzpanic launchers with fixes and DFlash changes contributed in-server.",
+      "use_it_if": "You are using the zzpanic launchers and need the fixes and DFlash changes made in the Discord.",
+      "kind": "launcher",
+      "categories": [
+        "launchers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/BMorgan1296/qwen3.6-vllm-gfx1201-launchers"
+      },
+      "people": {
+        "builders": [
+          "Bman1296"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "based_on": [
+          "zzpanic-gfx1201-launchers"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "dflash",
+        "speculative_decoding"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "topologies": [
+          "single_gpu"
+        ]
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/bmorgan-gfx1201-launchers.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/bmorgan-gfx1201-launchers.yaml"
+    },
+    {
+      "id": "capicua-vllm-rocm-rdna4",
+      "name": "Capicua25x/vllm-rocm-rdna4",
+      "tagline": "RDNA4 vLLM fork — Qwen 3.8 27B MXFP4 at 200K context with MTP on 2× RX 9070 XT.",
+      "use_it_if": "You have RDNA4 cards (RX 9070 XT or R9700-class) and want long-context MXFP4 serving with MTP.",
+      "kind": "runtime_fork",
+      "categories": [
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/Capicua25x/vllm-rocm-rdna4"
+      },
+      "people": {
+        "builders": [
+          "capicua25x"
+        ],
+        "shared_by": [
+          "Darkmoon"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "rx9070xt",
+          "r9700"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "mtp",
+        "speculative_decoding",
+        "long_context",
+        "continuous_batching"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Qwen 3.8 27B"
+        ],
+        "quantizations": [
+          "mxfp4"
+        ],
+        "topologies": [
+          "dual_gpu"
+        ]
+      },
+      "evidence": [
+        "capicua-9070xt-x2-qwen38-27b-mxfp4-single",
+        "capicua-9070xt-x2-qwen38-27b-mxfp4-batched"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/capicua-vllm-rocm-rdna4.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/capicua-vllm-rocm-rdna4.yaml"
+    },
+    {
+      "id": "clown-circus",
+      "name": "cztomsik/clown-circus",
+      "tagline": "Minimal agent harness where the model writes its own prompts, with reasoning-trace inspection.",
+      "use_it_if": "You are experimenting with agent prompting and want to reduce over-thinking.",
+      "kind": "agent_harness",
+      "categories": [
+        "agents"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/cztomsik/clown-circus"
+      },
+      "people": {
+        "builders": [
+          "cztomsik"
+        ]
+      },
+      "hardware": {
+        "agnostic": true
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/clown-circus.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/clown-circus.yaml"
+    },
+    {
+      "id": "deepseek-v41-flash-4x-rtx-pro-6000",
+      "name": "0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000",
+      "tagline": "DeepSeek-V4.1-Flash on 4× RTX Pro 6000 at ~200 t/s TG / 7k PP at 8k context.",
+      "use_it_if": "You have a 4× RTX Pro 6000 (Blackwell) box and want to serve DeepSeek-V4.1-Flash.",
+      "kind": "deployment_guide",
+      "categories": [
+        "radiance_ecosystem",
+        "multi_gpu"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000"
+      },
+      "people": {
+        "builders": [
+          "0xSero"
+        ],
+        "shared_by": [
+          "mldatascientist"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "nvidia"
+        ],
+        "architectures": [
+          "nvidia_blackwell"
+        ],
+        "gpu_models": [
+          "rtx_pro_6000"
+        ],
+        "gpu_count": {
+          "min": 4
+        }
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ]
+      },
+      "provides": [
+        "openai_api"
+      ],
+      "supports": {
+        "model_families": [
+          "deepseek"
+        ],
+        "models": [
+          "DeepSeek-V4.1-Flash"
+        ],
+        "topologies": [
+          "multi_gpu"
+        ]
+      },
+      "evidence": [
+        "deepseek-rtxpro6000x4-v41-flash-8k"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/deepseek-v41-flash-4x-rtx-pro-6000.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/deepseek-v41-flash-4x-rtx-pro-6000.yaml"
+    },
+    {
+      "id": "dual-r9700-vllm-proxmox",
+      "name": "bkvargyas/dual-r9700-vllm-proxmox",
+      "tagline": "2× R9700 on Proxmox with PCI passthrough and P2P on EPYC, with RCCL patches and benchmarks.",
+      "use_it_if": "You are building a dual-R9700 server under Proxmox and need working P2P inside the VM.",
+      "kind": "platform_setup",
+      "categories": [
+        "multi_gpu"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/bkvargyas/dual-r9700-vllm-proxmox"
+      },
+      "people": {
+        "builders": [
+          "bkvargyas"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ],
+        "gpu_count": {
+          "min": 2
+        },
+        "host_notes": "EPYC host."
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "os": [
+          "proxmox"
+        ]
+      },
+      "provides": [
+        "p2p",
+        "openai_api",
+        "tensor_parallel"
+      ],
+      "supports": {
+        "topologies": [
+          "dual_gpu_p2p"
+        ]
+      },
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Includes RCCL patches that fix P2P bugs and full benchmark results (not yet normalized into benchmark records).",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/dual-r9700-vllm-proxmox.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/dual-r9700-vllm-proxmox.yaml"
+    },
+    {
+      "id": "hipengine",
+      "name": "shisa-ai/hipEngine",
+      "tagline": "From-scratch RX 7900 XTX inference engine with ~5.7x near-lossless KV compression and MTP.",
+      "use_it_if": "You have an RX 7900 XTX and want maximum context (up to 232K at Q4_K_M) from a single card.",
+      "kind": "inference_engine",
+      "categories": [
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/shisa-ai/hipEngine"
+      },
+      "people": {
+        "builders": [
+          "lhl"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna3"
+        ],
+        "gpu_models": [
+          "rx7900xtx"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "custom_engine"
+        ]
+      },
+      "provides": [
+        "kv_compression",
+        "mtp",
+        "speculative_decoding",
+        "long_context"
+      ],
+      "supports": {
+        "quantizations": [
+          "gguf_q4_k_m"
+        ],
+        "topologies": [
+          "single_gpu"
+        ]
+      },
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "v0.5.0 adds DMS KV compression (author reports 100% top-1, 0.001 KLD). Shared in #rx7900.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/hipengine.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/hipengine.yaml"
+    },
+    {
+      "id": "int8-aiter",
+      "name": "curvedinf/int8-aiter",
+      "tagline": "The INT8 AITER kernels behind the 4× MI100 972 t/s result.",
+      "use_it_if": "You are building INT8 inference on CDNA and want the kernels without the full vLLM fork.",
+      "kind": "kernel_library",
+      "categories": [
+        "inference_servers",
+        "kernels"
+      ],
+      "maturity": "unverified",
+      "audience": "kernel_hacker",
+      "links": {
+        "repository": "https://github.com/curvedinf/int8-aiter"
+      },
+      "people": {
+        "builders": [
+          "curvedinf"
+        ],
+        "shared_by": [
+          "mldatascientist"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "cdna"
+        ],
+        "gpu_models": [
+          "mi100"
+        ]
+      },
+      "provides": [
+        "custom_kernels"
+      ],
+      "supports": {
+        "quantizations": [
+          "int8"
+        ]
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/int8-aiter.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/int8-aiter.yaml"
+    },
+    {
+      "id": "int8-vllm",
+      "name": "curvedinf/int8-vllm",
+      "tagline": "INT8-optimized vLLM — Qwen3.8-27B C8 at 972 t/s TG / 5,680 PP on 4× MI100.",
+      "use_it_if": "You have MI100s (CDNA1) and want high-throughput INT8 serving.",
+      "kind": "runtime_fork",
+      "categories": [
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/curvedinf/int8-vllm",
+        "writeup": "https://www.reddit.com/r/LocalLLaMA/comments/1vz9hqa/qwen38_27b_c8_at_972_tg_5680_pp_on_4x_mi100_rig/"
+      },
+      "people": {
+        "builders": [
+          "curvedinf"
+        ],
+        "shared_by": [
+          "mldatascientist"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "cdna"
+        ],
+        "gpu_models": [
+          "mi100"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "based_on": [
+          "int8-aiter"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "custom_kernels"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Qwen3.8-27B C8"
+        ],
+        "quantizations": [
+          "int8"
+        ],
+        "topologies": [
+          "multi_gpu"
+        ]
+      },
+      "evidence": [
+        "int8-vllm-mi100x4-qwen38-27b-c8"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/int8-vllm.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/int8-vllm.yaml"
+    },
+    {
+      "id": "krea2-intel-arc-b580",
+      "name": "davetha/krea2-intel-arc-b580",
+      "tagline": "Krea2 image-model test harness on Intel Arc B580.",
+      "use_it_if": "You own an Intel Arc card and want a working datapoint for running a modern model on it.",
+      "kind": "test_harness",
+      "categories": [
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/davetha/krea2-intel-arc-b580"
+      },
+      "people": {
+        "builders": [
+          "davetha"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "intel"
+        ],
+        "architectures": [
+          "intel_arc"
+        ],
+        "gpu_models": [
+          "arc_b580"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "diffusion"
+        ]
+      },
+      "provides": [
+        "image_generation"
+      ],
+      "supports": {
+        "model_families": [
+          "krea"
+        ]
+      },
+      "not_suitable_for": [
+        "LLM serving — this is an image-model harness",
+        "not vLLM or llama.cpp"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/krea2-intel-arc-b580.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/krea2-intel-arc-b580.yaml"
+    },
+    {
+      "id": "libr4d",
+      "name": "StillDeadcode/libr4d",
+      "tagline": "gfx1201-specialized HIP kernel library (pure HIP, llama.cpp-friendly).",
+      "use_it_if": "You are developing or tuning kernels for RDNA4 and want a community gfx1201 kernel base.",
+      "kind": "kernel_library",
+      "categories": [
+        "kernels"
+      ],
+      "maturity": "unverified",
+      "audience": "kernel_hacker",
+      "links": {
+        "repository": "https://codeberg.org/StillDeadcode/libr4d"
+      },
+      "people": {
+        "builders": [
+          "Deadcode"
+        ],
+        "contributors": [
+          "community contributors"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "llama_cpp"
+        ]
+      },
+      "provides": [
+        "custom_kernels"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/libr4d.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/libr4d.yaml"
+    },
+    {
+      "id": "libreshockwave",
+      "name": "LibreShockwave/LibreShockwave",
+      "tagline": "A Ruffle-equivalent for Adobe Shockwave, running old Shockwave content in modern browsers.",
+      "use_it_if": "You want to run legacy Shockwave content in a modern browser.",
+      "kind": "other",
+      "categories": [
+        "other"
+      ],
+      "maturity": "unverified",
+      "audience": "beginner",
+      "links": {
+        "repository": "https://github.com/LibreShockwave/LibreShockwave"
+      },
+      "people": {
+        "builders": [
+          "Alex"
+        ]
+      },
+      "hardware": {
+        "agnostic": true
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/libreshockwave.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/libreshockwave.yaml"
+    },
+    {
+      "id": "llama-cpp-rdna-boosts",
+      "name": "stew675/llama-cpp-rdna-boosts",
+      "tagline": "llama.cpp performance patches for RDNA3 — the biggest prompt-processing uplift many 7900 XTX owners saw.",
+      "use_it_if": "You run llama.cpp on an RDNA3 card and want faster prompt processing without switching runtimes.",
+      "kind": "patch_set",
+      "categories": [
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/stew675/llama-cpp-rdna-boosts",
+        "mirrors": [
+          "https://github.com/stew675/llama.cpp/tree/rdna-boosts"
+        ]
+      },
+      "people": {
+        "builders": [
+          "stew675"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna3"
+        ],
+        "gpu_models": [
+          "rx7900xtx"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "llama_cpp"
+        ]
+      },
+      "provides": [
+        "custom_kernels",
+        "openai_api"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Also live as the rdna-boosts branch of stew675/llama.cpp. Members report a few hundred t/s of extra prompt processing (no normalized record yet).",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/llama-cpp-rdna-boosts.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/llama-cpp-rdna-boosts.yaml"
+    },
+    {
+      "id": "magiccodingman-vllm-radiance",
+      "name": "magiccodingman/vllm-radiance",
+      "tagline": "Radiance rebased onto current vLLM main with DFlash2 and MXFP4 work merged in.",
+      "use_it_if": "You have an R9700 and want the Radiance-specific paths on a newer vLLM/PyTorch/ROCm stack, and can debug an experimental build.",
+      "kind": "runtime_fork",
+      "categories": [
+        "inference_servers",
+        "radiance_ecosystem"
+      ],
+      "maturity": "experimental",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/magiccodingman/vllm-radiance"
+      },
+      "people": {
+        "builders": [
+          "slurp"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "stack_notes": "AMD PyTorch 2.12 / Triton 3.7.1 / AITER 0.1.20 / ROCm 7.14 (as stated by the author).",
+        "based_on": [
+          "vllm-radiance"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "dflash",
+        "speculative_decoding"
+      ],
+      "supports": {
+        "quantizations": [
+          "mxfp4"
+        ]
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Also mirrored on GitLab.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/magiccodingman-vllm-radiance.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/magiccodingman-vllm-radiance.yaml"
+    },
+    {
+      "id": "malicz-gfx1201-launchers",
+      "name": "malicz/vllm-gfx1201-launchers",
+      "tagline": "Single-R9700 Radiance + MXFP4 setup — Dockerfile, model download, MTP conversion and patches.",
+      "use_it_if": "You have one R9700 and want a complete Docker-based MXFP4 setup with 160K context.",
+      "kind": "launcher",
+      "categories": [
+        "launchers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/malicz/vllm-gfx1201-launchers"
+      },
+      "people": {
+        "builders": [
+          "malicz"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ],
+        "gpu_count": {
+          "min": 1
+        }
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "container": true,
+        "based_on": [
+          "vllm-radiance"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "mtp",
+        "dflash",
+        "speculative_decoding",
+        "long_context"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Qwen3.8-27B MXFP4"
+        ],
+        "quantizations": [
+          "mxfp4"
+        ],
+        "topologies": [
+          "single_gpu"
+        ]
+      },
+      "evidence": [
+        "malicz-r9700x1-qwen38-27b-mxfp4-160k"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Built on Deadcode's and Brian's work; includes patches such as patch_dflash_w4a16_kv.py.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/malicz-gfx1201-launchers.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/malicz-gfx1201-launchers.yaml"
+    },
+    {
+      "id": "mi210-llm-stack",
+      "name": "davetha/mi210-llm-stack",
+      "tagline": "Full MI210 LLM stack documentation with a per-tier model-weight serving matrix.",
+      "use_it_if": "You have MI210s and want to know which models and weights to serve at each tier before choosing a build.",
+      "kind": "deployment_guide",
+      "categories": [
+        "launchers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/davetha/mi210-llm-stack"
+      },
+      "people": {
+        "builders": [
+          "davetha"
+        ],
+        "shared_by": [
+          "mldatascientist"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "cdna2"
+        ],
+        "gpu_models": [
+          "mi210"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "based_on": [
+          "mi210-vllm",
+          "aiter-cdna2"
+        ]
+      },
+      "provides": [
+        "openai_api"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/mi210-llm-stack.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/mi210-llm-stack.yaml"
+    },
+    {
+      "id": "mi210-vllm",
+      "name": "davetha/mi210-vllm",
+      "tagline": "vLLM build with the AITER patches for MI210, including a full INT8 Qwen3.8-27B recipe.",
+      "use_it_if": "You have an MI210 and want a ready docker-run recipe for INT8 Qwen serving.",
+      "kind": "runtime_fork",
+      "categories": [
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/davetha/mi210-vllm"
+      },
+      "people": {
+        "builders": [
+          "davetha"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "cdna2"
+        ],
+        "gpu_models": [
+          "mi210"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "container": true,
+        "based_on": [
+          "aiter-cdna2"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "custom_kernels"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Qwen3.8-27B INT8"
+        ],
+        "quantizations": [
+          "int8"
+        ]
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/mi210-vllm.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/mi210-vllm.yaml"
+    },
+    {
+      "id": "minimax-m3-3x-dgx-spark",
+      "name": "tonyd2wild/Minimax-M3-NVFP-3x-DGX-Sparks-TP-3",
+      "tagline": "MiniMax-M3 NVFP4 across 3× DGX Spark with tensor parallelism 3.",
+      "use_it_if": "You have several DGX Sparks and want to serve MiniMax-M3 across them.",
+      "kind": "deployment_guide",
+      "categories": [
+        "radiance_ecosystem",
+        "multi_gpu"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/tonyd2wild/Minimax-M3-NVFP-3x-DGX-Sparks-TP-3"
+      },
+      "people": {
+        "builders": [
+          "tonyd2wild"
+        ],
+        "shared_by": [
+          "The_Candle_Watcher"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "nvidia"
+        ],
+        "architectures": [
+          "nvidia_blackwell"
+        ],
+        "gpu_models": [
+          "dgx_spark"
+        ],
+        "gpu_count": {
+          "min": 3
+        }
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "tensor_parallel"
+      ],
+      "supports": {
+        "model_families": [
+          "minimax"
+        ],
+        "models": [
+          "MiniMax-M3 NVFP4"
+        ],
+        "quantizations": [
+          "nvfp4"
+        ],
+        "topologies": [
+          "multi_node"
+        ]
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Builder recorded by GitHub owner; Discord handle not yet recorded.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/minimax-m3-3x-dgx-spark.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/minimax-m3-3x-dgx-spark.yaml"
+    },
+    {
+      "id": "opengfx1030-vllm-rdna",
+      "name": "opengfx1030/vllm-rdna",
+      "tagline": "Work-in-progress community fork merging RDNA2 vLLM work into one shared gfx1030 repo.",
+      "use_it_if": "You want to follow or contribute to consolidated vLLM support for RDNA2 (gfx1030).",
+      "kind": "runtime_fork",
+      "categories": [
+        "inference_servers"
+      ],
+      "maturity": "experimental",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/opengfx1030/vllm-rdna"
+      },
+      "people": {
+        "builders": [
+          "BlivionIaG"
+        ],
+        "contributors": [
+          "leapdragon"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna2"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ]
+      },
+      "provides": [
+        "openai_api"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/opengfx1030-vllm-rdna.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/opengfx1030-vllm-rdna.yaml"
+    },
+    {
+      "id": "pheb",
+      "name": "Amalia-LLM/pheb",
+      "tagline": "European-Portuguese legal LLM eval — ~800 lawyer-graded questions over a 21k-article law corpus.",
+      "use_it_if": "You need to evaluate model quality on Portuguese legal tasks.",
+      "kind": "eval_dataset",
+      "categories": [
+        "benchmarks"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/Amalia-LLM/pheb"
+      },
+      "people": {
+        "builders": [
+          "Carlos Rolo"
+        ]
+      },
+      "hardware": {
+        "agnostic": true
+      },
+      "provides": [
+        "benchmarking"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "This is the open-source portion of the eval.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/pheb.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/pheb.yaml"
+    },
+    {
+      "id": "r9v",
+      "name": "Dyluhn/R9V",
+      "tagline": "GPU monitoring and inspection tool for the R9700.",
+      "use_it_if": "You run R9700s and want to watch GPU state while tuning or serving.",
+      "kind": "monitoring_tool",
+      "categories": [
+        "tooling"
+      ],
+      "maturity": "supported",
+      "audience": "beginner",
+      "links": {
+        "repository": "https://github.com/Dyluhn/R9V"
+      },
+      "people": {
+        "builders": [
+          "Dyluhn"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ]
+      },
+      "provides": [
+        "monitoring"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Actively maintained in-server; regressions are tracked and fixed within hours of being reported.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/r9v.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/r9v.yaml"
+    },
+    {
+      "id": "rocmfp4-llama",
+      "name": "charlie12345/rocmfp4-llama",
+      "tagline": "llama.cpp with ROCmFP4 support for RDNA2 and Strix — the recipe V620 owners use.",
+      "use_it_if": "You have a V620 (RDNA2) or a Strix APU and want 4-bit llama.cpp serving with an MTP draft.",
+      "kind": "runtime_fork",
+      "categories": [
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/charlie12345/rocmfp4-llama"
+      },
+      "people": {
+        "builders": [
+          "charlie12345"
+        ],
+        "shared_by": [
+          "celer"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna2",
+          "rdna3_5"
+        ],
+        "gpu_models": [
+          "v620",
+          "strix_halo"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "llama_cpp"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "mtp",
+        "speculative_decoding"
+      ],
+      "supports": {
+        "quantizations": [
+          "gguf_q4_0_rocmfp4"
+        ]
+      },
+      "quick_start": "./scripts/build-rdna2.sh\n# then serve a Q4_0_ROCMFP4 GGUF with an MTP draft model\n",
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/rocmfp4-llama.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/rocmfp4-llama.yaml"
+    },
+    {
+      "id": "sglang-2x-r9700",
+      "name": "mattbucci/2x-R9700-RDNA4-GFX1201-sglang-inference",
+      "tagline": "SGLang builds for 2× R9700 — the community's starting point for SGLang on RDNA4.",
+      "use_it_if": "You have two R9700s and want SGLang rather than vLLM.",
+      "kind": "deployment_guide",
+      "categories": [
+        "radiance_ecosystem",
+        "multi_gpu"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/mattbucci/2x-R9700-RDNA4-GFX1201-sglang-inference"
+      },
+      "people": {
+        "builders": [
+          "mattbucci"
+        ],
+        "shared_by": [
+          "blakelemons"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ],
+        "gpu_count": {
+          "min": 2
+        }
+      },
+      "software": {
+        "runtimes": [
+          "sglang"
+        ]
+      },
+      "provides": [
+        "openai_api"
+      ],
+      "supports": {
+        "topologies": [
+          "dual_gpu"
+        ]
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/sglang-2x-r9700.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/sglang-2x-r9700.yaml"
+    },
+    {
+      "id": "v620-toolbox",
+      "name": "BlivionIaG/v620_toolbox",
+      "tagline": "Scripts and utilities for Radeon Pro V620 boxes.",
+      "use_it_if": "You run V620s and want the community's helper scripts.",
+      "kind": "toolbox",
+      "categories": [
+        "tooling"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/BlivionIaG/v620_toolbox"
+      },
+      "people": {
+        "builders": [
+          "BlivionIaG"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna2"
+        ],
+        "gpu_models": [
+          "v620"
+        ]
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/v620-toolbox.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/v620-toolbox.yaml"
+    },
+    {
+      "id": "vllm-expert-cache",
+      "name": "davetha/vllm-expert-cache",
+      "tagline": "LRU/LFU expert-cache patch for vLLM so MoE models that would not fit can run on smaller rigs.",
+      "use_it_if": "You want to serve a MoE model that does not fit in your VRAM and can accept some speed loss.",
+      "kind": "patch_set",
+      "categories": [
+        "kernels"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/davetha/vllm-expert-cache"
+      },
+      "people": {
+        "builders": [
+          "davetha"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd",
+          "intel"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ]
+      },
+      "provides": [
+        "moe_expert_cache",
+        "openai_api"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Includes porting docs for Intel. Target GPU architectures not yet recorded.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-expert-cache.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/vllm-expert-cache.yaml"
+    },
+    {
+      "id": "vllm-mxfp4",
+      "name": "GGZ14/vllm-mxfp4",
+      "tagline": "MXFP4 fast path on top of the Radiance image, with online conversion of NVFP4 checkpoints.",
+      "use_it_if": "You have R9700s and want the highest reported prefill and decode numbers for 27B-class 4-bit models.",
+      "kind": "runtime_fork",
+      "categories": [
+        "radiance_ecosystem"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/GGZ14/vllm-mxfp4",
+        "mirrors": [
+          "https://codeberg.org/ggz14/radiance-vllm-mxfp4"
+        ]
+      },
+      "people": {
+        "builders": [
+          "The_Candle_Watcher"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "container": true,
+        "based_on": [
+          "vllm-radiance"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "custom_kernels"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Qwen3.8-27B NVFP4"
+        ],
+        "quantizations": [
+          "mxfp4",
+          "nvfp4"
+        ]
+      },
+      "evidence": [
+        "vllm-mxfp4-r9700-qwen38-27b-nvfp4"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-mxfp4.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/vllm-mxfp4.yaml"
+    },
+    {
+      "id": "vllm-radiance",
+      "name": "StillDeadcode/vllm-radiance",
+      "tagline": "The Radiance vLLM image for gfx1201 — the base most community R9700 forks build on.",
+      "use_it_if": "You have an RDNA4 card (R9700-class) and want the common vLLM base the rest of the R9700 ecosystem assumes.",
+      "kind": "docker_image",
+      "categories": [
+        "radiance_ecosystem",
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://codeberg.org/StillDeadcode/vllm-radiance",
+        "docker_image": "https://hub.docker.com/r/stilldeadcode/vllm-radiance"
+      },
+      "people": {
+        "builders": [
+          "Deadcode"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "container": true
+      },
+      "provides": [
+        "openai_api",
+        "continuous_batching"
+      ],
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-radiance.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/vllm-radiance.yaml"
+    },
+    {
+      "id": "vllm-radiance-p2p",
+      "name": "mkadrlik/vllm-radiance-p2p",
+      "tagline": "vLLM Radiance adapted for 2× RX 7900 with P2P.",
+      "use_it_if": "You have two RX 7900-series cards with P2P and want to serve a 27B AWQ model across the pair.",
+      "kind": "runtime_fork",
+      "categories": [
+        "inference_servers",
+        "multi_gpu"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/mkadrlik/vllm-radiance-p2p"
+      },
+      "people": {
+        "builders": [
+          "Froz"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna3"
+        ],
+        "gpu_models": [
+          "rx7900xtx",
+          "rx7900xt"
+        ],
+        "gpu_count": {
+          "min": 2
+        }
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "based_on": [
+          "vllm-radiance"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "p2p"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Qwen3.8-27B AWQ"
+        ],
+        "quantizations": [
+          "awq"
+        ],
+        "topologies": [
+          "dual_gpu_p2p"
+        ]
+      },
+      "evidence": [
+        "radiance-p2p-7900x2-qwen38-27b-awq"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-radiance-p2p.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/vllm-radiance-p2p.yaml"
+    },
+    {
+      "id": "vllm-radlight",
+      "name": "hifi/vllm-radlight",
+      "tagline": "Lightweight vLLM variant; median decode above 70 t/s on one R9700 with Qwen3.8-27B at 192K context.",
+      "use_it_if": "You run a single R9700 and want long-context Qwen serving from a lighter vLLM variant with published bench results.",
+      "kind": "runtime_fork",
+      "categories": [
+        "radiance_ecosystem",
+        "inference_servers"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://codeberg.org/hifi/vllm-radlight"
+      },
+      "people": {
+        "builders": [
+          "hifi"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ],
+        "gpu_count": {
+          "min": 1
+        }
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "long_context"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Qwen3.8-27B"
+        ],
+        "topologies": [
+          "single_gpu"
+        ]
+      },
+      "evidence": [
+        "radlight-r9700x1-qwen38-27b-192k"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-radlight.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/vllm-radlight.yaml"
+    },
+    {
+      "id": "vllm-rdna2-qwen",
+      "name": "leapdragon/vllm-rdna2-qwen",
+      "tagline": "vLLM fork for 4× V620 — ~70 t/s with MTP=3 on Qwen3.8-Flash-Next W4A16.",
+      "use_it_if": "You have a multi-V620 (RDNA2) server and want Qwen serving with MTP.",
+      "kind": "runtime_fork",
+      "categories": [
+        "inference_servers",
+        "multi_gpu"
+      ],
+      "maturity": "unverified",
+      "audience": "developer",
+      "links": {
+        "repository": "https://github.com/leapdragon/vllm-rdna2-qwen"
+      },
+      "people": {
+        "builders": [
+          "leapdragon"
+        ],
+        "shared_by": [
+          "Schimazing"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna2"
+        ],
+        "gpu_models": [
+          "v620"
+        ],
+        "host_notes": "Reported on a Zen 2 EPYC / PCIe Gen4 platform."
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "mtp",
+        "speculative_decoding"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Qwen3.8-Flash-Next W4A16"
+        ],
+        "quantizations": [
+          "w4a16"
+        ],
+        "topologies": [
+          "multi_gpu"
+        ]
+      },
+      "evidence": [
+        "rdna2-qwen-v620x4-flash-next-w4a16"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-rdna2-qwen.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/vllm-rdna2-qwen.yaml"
+    },
+    {
+      "id": "vllm-rdna2-recipe",
+      "name": "leapdragon/vllm-rdna2-recipe",
+      "tagline": "Deployment recipe for vLLM on RDNA2, including a fix for prefill blocking generation.",
+      "use_it_if": "You are deploying vLLM on V620s and want the documented steps plus the concurrency fix.",
+      "kind": "deployment_guide",
+      "categories": [
+        "inference_servers",
+        "launchers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/leapdragon/vllm-rdna2-recipe"
+      },
+      "people": {
+        "builders": [
+          "leapdragon"
+        ],
+        "contributors": [
+          "wsantos"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna2"
+        ],
+        "gpu_models": [
+          "v620"
+        ]
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "based_on": [
+          "vllm-rdna2-qwen"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "continuous_batching"
+      ],
+      "supports": {
+        "topologies": [
+          "multi_gpu"
+        ]
+      },
+      "evidence": [
+        "rdna2-recipe-v620x4-8-streams"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "listed_since": "2026-09-24"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-rdna2-recipe.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/vllm-rdna2-recipe.yaml"
+    },
+    {
+      "id": "webbrain",
+      "name": "webbrain-one/webbrain",
+      "tagline": "Community-shared knowledge project mentioned in #hang-out.",
+      "use_it_if": "You are curious about community knowledge-base projects.",
+      "kind": "other",
+      "categories": [
+        "other"
+      ],
+      "maturity": "unverified",
+      "links": {
+        "repository": "https://github.com/webbrain-one/webbrain"
+      },
+      "people": {
+        "builders": [
+          "webbrain-one"
+        ],
+        "shared_by": [
+          "xza.nomad"
+        ]
+      },
+      "hardware": {
+        "agnostic": true
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "Builder recorded by GitHub owner; Discord handle not yet recorded.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/webbrain.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/webbrain.yaml"
+    },
+    {
+      "id": "zzpanic-gfx1201-launchers",
+      "name": "zzpanic/qwen3.6-vllm-gfx1201-launchers",
+      "tagline": "The de-facto standard launch scripts for single-R9700 vLLM + DFlash2.",
+      "use_it_if": "You have one R9700 and want the most-recommended path to a working Qwen vLLM endpoint.",
+      "kind": "launcher",
+      "categories": [
+        "launchers"
+      ],
+      "maturity": "unverified",
+      "audience": "operator",
+      "links": {
+        "repository": "https://github.com/zzpanic/qwen3.6-vllm-gfx1201-launchers"
+      },
+      "people": {
+        "builders": [
+          "zzpanic"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "amd"
+        ],
+        "architectures": [
+          "rdna4"
+        ],
+        "gpu_models": [
+          "r9700"
+        ],
+        "gpu_count": {
+          "min": 1
+        }
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ]
+      },
+      "provides": [
+        "openai_api",
+        "dflash",
+        "speculative_decoding"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "topologies": [
+          "single_gpu"
+        ]
+      },
+      "verification": {
+        "level": "unverified",
+        "listed_since": "2026-09-24"
+      },
+      "notes": "The most-recommended starting point in #r9700.",
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/zzpanic-gfx1201-launchers.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/zzpanic-gfx1201-launchers.yaml"
+    }
+  ],
+  "recipes": [],
+  "benchmarks": [
+    {
+      "id": "capicua-9070xt-x2-qwen38-27b-mxfp4-batched",
+      "project": "capicua-vllm-rocm-rdna4",
+      "mode": "batched",
+      "hardware": {
+        "gpu_model": "rx9070xt",
+        "gpu_count": 2
+      },
+      "runtime": {
+        "name": "vllm",
+        "speculative": "MTP"
+      },
+      "model": {
+        "name": "Qwen 3.8 27B MXFP4",
+        "family": "qwen3",
+        "quantization": "mxfp4"
+      },
+      "workload": {
+        "context_length": 200000
+      },
+      "metrics": {
+        "decode_tok_s": 140,
+        "approximate": true,
+        "statistic": "peak"
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      },
+      "notes": "Reported as 'up to ~140 t/s batched'; concurrency not stated."
+    },
+    {
+      "id": "capicua-9070xt-x2-qwen38-27b-mxfp4-single",
+      "project": "capicua-vllm-rocm-rdna4",
+      "mode": "single_stream",
+      "hardware": {
+        "gpu_model": "rx9070xt",
+        "gpu_count": 2
+      },
+      "runtime": {
+        "name": "vllm",
+        "speculative": "MTP"
+      },
+      "model": {
+        "name": "Qwen 3.8 27B MXFP4",
+        "family": "qwen3",
+        "quantization": "mxfp4"
+      },
+      "workload": {
+        "context_length": 200000,
+        "concurrency": 1
+      },
+      "metrics": {
+        "decode_tok_s": 50,
+        "approximate": true
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      }
+    },
+    {
+      "id": "deepseek-rtxpro6000x4-v41-flash-8k",
+      "project": "deepseek-v41-flash-4x-rtx-pro-6000",
+      "mode": "not_reported",
+      "hardware": {
+        "gpu_model": "rtx_pro_6000",
+        "gpu_count": 4
+      },
+      "model": {
+        "name": "DeepSeek-V4.1-Flash",
+        "family": "deepseek"
+      },
+      "workload": {
+        "context_length": 8192
+      },
+      "metrics": {
+        "decode_tok_s": 200,
+        "prefill_tok_s": 7000,
+        "approximate": true
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      }
+    },
+    {
+      "id": "int8-vllm-mi100x4-qwen38-27b-c8",
+      "project": "int8-vllm",
+      "mode": "not_reported",
+      "hardware": {
+        "gpu_model": "mi100",
+        "gpu_count": 4
+      },
+      "runtime": {
+        "name": "vllm"
+      },
+      "model": {
+        "name": "Qwen3.8-27B C8",
+        "family": "qwen3",
+        "quantization": "int8"
+      },
+      "metrics": {
+        "decode_tok_s": 972,
+        "prefill_tok_s": 5680
+      },
+      "source": {
+        "type": "reddit",
+        "url": "https://www.reddit.com/r/LocalLLaMA/comments/1vz9hqa/qwen38_27b_c8_at_972_tg_5680_pp_on_4x_mi100_rig/",
+        "recorded_on": "2026-09-24"
+      },
+      "notes": "A decode figure this high implies batched load; concurrency is in the Reddit writeup, not yet recorded here."
+    },
+    {
+      "id": "malicz-r9700x1-qwen38-27b-mxfp4-160k",
+      "project": "malicz-gfx1201-launchers",
+      "mode": "not_reported",
+      "hardware": {
+        "gpu_model": "r9700",
+        "gpu_count": 1
+      },
+      "runtime": {
+        "name": "vllm"
+      },
+      "model": {
+        "name": "Qwen3.8-27B MXFP4",
+        "family": "qwen3",
+        "quantization": "mxfp4"
+      },
+      "workload": {
+        "context_length": 160000
+      },
+      "metrics": {
+        "decode_tok_s": 81,
+        "prefill_tok_s": 2380,
+        "approximate": true
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      }
+    },
+    {
+      "id": "radiance-p2p-7900x2-qwen38-27b-awq",
+      "project": "vllm-radiance-p2p",
+      "mode": "not_reported",
+      "hardware": {
+        "gpu_model": "rx7900_series",
+        "gpu_count": 2,
+        "p2p": true
+      },
+      "runtime": {
+        "name": "vllm"
+      },
+      "model": {
+        "name": "Qwen3.8-27B AWQ",
+        "family": "qwen3",
+        "quantization": "awq"
+      },
+      "metrics": {
+        "decode_tok_s": 53,
+        "approximate": true
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      },
+      "notes": "Source says '2× RX 7900'; exact variant (XTX/XT) not stated."
+    },
+    {
+      "id": "radlight-r9700x1-qwen38-27b-192k",
+      "project": "vllm-radlight",
+      "mode": "not_reported",
+      "hardware": {
+        "gpu_model": "r9700",
+        "gpu_count": 1
+      },
+      "runtime": {
+        "name": "vllm"
+      },
+      "model": {
+        "name": "Qwen3.8-27B",
+        "family": "qwen3"
+      },
+      "workload": {
+        "context_length": 192000
+      },
+      "metrics": {
+        "decode_tok_s": 70,
+        "statistic": "median",
+        "approximate": true
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      },
+      "notes": "Reported as 'median decode >70 t/s'."
+    },
+    {
+      "id": "rdna2-qwen-v620x4-flash-next-w4a16",
+      "project": "vllm-rdna2-qwen",
+      "mode": "not_reported",
+      "hardware": {
+        "gpu_model": "v620",
+        "gpu_count": 4,
+        "interconnect": "PCIe Gen4",
+        "host_cpu": "Zen 2 EPYC"
+      },
+      "runtime": {
+        "name": "vllm",
+        "speculative": "MTP=3"
+      },
+      "model": {
+        "name": "Qwen3.8-Flash-Next W4A16",
+        "family": "qwen3",
+        "quantization": "w4a16"
+      },
+      "metrics": {
+        "decode_tok_s": 70,
+        "approximate": true
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      }
+    },
+    {
+      "id": "rdna2-recipe-v620x4-8-streams",
+      "project": "vllm-rdna2-recipe",
+      "mode": "batched",
+      "hardware": {
+        "gpu_model": "v620",
+        "gpu_count": 4
+      },
+      "runtime": {
+        "name": "vllm"
+      },
+      "model": {
+        "name": "not reported"
+      },
+      "workload": {
+        "concurrency": 8
+      },
+      "metrics": {
+        "decode_tok_s": 150,
+        "approximate": true
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      },
+      "notes": "Aggregate across 8 concurrent streams after @wsantos's prefill-blocking fix."
+    },
+    {
+      "id": "vllm-mxfp4-r9700-qwen38-27b-nvfp4",
+      "project": "vllm-mxfp4",
+      "mode": "not_reported",
+      "hardware": {
+        "gpu_model": "r9700"
+      },
+      "runtime": {
+        "name": "vllm"
+      },
+      "model": {
+        "name": "Qwen3.8-27B NVFP4 (online MXFP4 conversion)",
+        "family": "qwen3",
+        "quantization": "nvfp4"
+      },
+      "metrics": {
+        "decode_tok_s": 276,
+        "prefill_tok_s": 5809
+      },
+      "source": {
+        "type": "list_entry",
+        "recorded_on": "2026-09-24"
+      },
+      "notes": "Source says 'R9700s'; GPU count not stated."
+    }
+  ]
+}

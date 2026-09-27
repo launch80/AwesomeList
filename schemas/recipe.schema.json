@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/launch80/AwesomeList/main/schemas/recipe.schema.json",
+  "title": "Launch80 deployment recipe",
+  "description": "A narrow, reproducible deployment path. Every step must come from a run someone actually performed; record who in verification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "projects", "maturity", "goal", "compatibility", "steps", "success_criteria", "verification"],
+  "properties": {
+    "id": { "$ref": "vocabulary.schema.json#/$defs/id" },
+    "title": { "type": "string" },
+    "projects": { "type": "array", "minItems": 1, "items": { "$ref": "vocabulary.schema.json#/$defs/id" } },
+    "maturity": { "$ref": "vocabulary.schema.json#/$defs/maturity" },
+    "audience": { "$ref": "vocabulary.schema.json#/$defs/audience" },
+    "goal": {
+      "type": "object", "additionalProperties": false, "required": ["provides"],
+      "properties": {
+        "provides": { "type": "array", "minItems": 1, "items": { "$ref": "vocabulary.schema.json#/$defs/feature" } },
+        "priorities": { "type": "array", "items": { "type": "string", "enum": ["simplicity", "throughput", "latency", "memory_efficiency", "context_length"] } }
+      }
+    },
+    "compatibility": {
+      "type": "object", "additionalProperties": false, "required": ["architectures"],
+      "properties": {
+        "architectures": { "type": "array", "minItems": 1, "items": { "$ref": "vocabulary.schema.json#/$defs/architecture" } },
+        "gpu_models": { "type": "array", "items": { "type": "string" } },
+        "min_vram_gb": { "type": "number" },
+        "gpu_count": {
+          "type": "object", "additionalProperties": false,
+          "properties": { "min": { "type": "integer", "minimum": 1 }, "max": { "type": "integer", "minimum": 1 } }
+        },
+        "topology": { "$ref": "vocabulary.schema.json#/$defs/topology" },
+        "os": { "type": "array", "items": { "$ref": "vocabulary.schema.json#/$defs/os" } },
+        "os_versions": { "type": "array", "items": { "type": "string" } },
+        "rocm": { "$ref": "vocabulary.schema.json#/$defs/version_range" },
+        "system_ram_gb": { "type": "number" },
+        "disk_free_gb": { "type": "number" }
+      }
+    },
+    "model": {
+      "type": "object", "additionalProperties": false, "required": ["artifact"],
+      "properties": {
+        "artifact": { "type": "string" },
+        "family": { "$ref": "vocabulary.schema.json#/$defs/model_family" },
+        "quantization": { "$ref": "vocabulary.schema.json#/$defs/quantization" },
+        "context_length": { "type": "integer" }
+      }
+    },
+    "dependencies": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "required": { "type": "array", "items": { "type": "string" } },
+        "optional": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "steps": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "command"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "command": { "type": "string" },
+          "expected": { "type": "string" }
+        }
+      }
+    },
+    "success_criteria": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "rollback": { "type": "string" },
+    "known_failures": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["symptom"],
+        "properties": {
+          "symptom": { "type": "string" },
+          "likely_causes": { "type": "array", "items": { "type": "string" } },
+          "fix": { "type": "string" }
+        }
+      }
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["if", "recommend"],
+        "properties": { "if": { "type": "string" }, "recommend": { "$ref": "vocabulary.schema.json#/$defs/id" } }
+      }
+    },
+    "evidence": { "type": "array", "items": { "$ref": "vocabulary.schema.json#/$defs/id" } },
+    "verification": {
+      "type": "object", "additionalProperties": false, "required": ["level", "last_verified", "tested_by"],
+      "properties": {
+        "level": { "$ref": "vocabulary.schema.json#/$defs/verification_level" },
+        "last_verified": { "type": "string", "format": "date" },
+        "last_commit_checked": { "type": "string" },
+        "tested_by": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+      }
+    }
+  }
+}

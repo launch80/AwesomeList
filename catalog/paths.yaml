@@ -1,0 +1,89 @@
+# Goal-first entry points, rendered as the README "Start here" table.
+# `why` must state the basis for the pick (community signal, or "only option listed").
+- id: r9700-endpoint
+  i_want_to: Run a local OpenAI-compatible endpoint on one R9700
+  hardware: 1× Radeon AI PRO R9700
+  architectures: [rdna4]
+  typical_reader: Developer building against an API
+  start_with: [zzpanic-gfx1201-launchers]
+  then: [malicz-gfx1201-launchers, vllm-radiance]
+  why: "The most-recommended starting point in #r9700; malicz adds a full Docker + MXFP4 setup on the Radiance base."
+- id: r9700-throughput
+  i_want_to: Maximize throughput on R9700s
+  hardware: 1–2× Radeon AI PRO R9700
+  architectures: [rdna4]
+  typical_reader: Performance-focused builder
+  priority: throughput
+  start_with: [vllm-mxfp4]
+  then: [magiccodingman-vllm-radiance, vllm-radlight]
+  why: Highest prefill/decode numbers reported for R9700 in this list.
+  caveat: Numbers are author-reported and concurrency is not stated; benchmark your own endpoint before comparing.
+- id: rdna4-sglang
+  i_want_to: Use SGLang instead of vLLM on RDNA4
+  hardware: 2× Radeon AI PRO R9700
+  architectures: [rdna4]
+  typical_reader: Operator comparing runtimes
+  start_with: [sglang-2x-r9700]
+  why: The community's starting point for SGLang on RDNA4.
+- id: rdna3-single-card
+  i_want_to: Run quantized models on one RX 7900 XTX
+  hardware: 1× RX 7900 XTX (24 GB)
+  architectures: [rdna3]
+  typical_reader: Home-lab user
+  start_with: [llama-cpp-rdna-boosts]
+  then: [hipengine]
+  why: The best llama.cpp uplift many 7900 XTX owners saw; hipEngine fits up to 232K context at Q4_K_M.
+- id: rdna2-v620
+  i_want_to: Serve models on Radeon Pro V620s
+  hardware: 1–4× Radeon Pro V620
+  architectures: [rdna2]
+  typical_reader: Home-lab / used-server builder
+  start_with: [rocmfp4-llama]
+  then: [vllm-rdna2-recipe, vllm-rdna2-qwen, v620-toolbox]
+  why: rocmfp4-llama is the recipe members use on V620; the vLLM path suits multi-card rigs.
+- id: moe-small-rig
+  i_want_to: Serve a MoE model that does not fit in VRAM
+  hardware: Any vLLM-capable rig
+  typical_reader: Advanced inference user
+  start_with: [vllm-expert-cache]
+  why: Only expert-offload project listed.
+  caveat: Target GPU architectures are not yet recorded.
+- id: cdna-datacenter
+  i_want_to: Run fast inference on MI210 / MI100
+  hardware: Instinct MI210 (CDNA2) or MI100 (CDNA1)
+  architectures: [cdna, cdna2]
+  typical_reader: Datacenter / used-accelerator owner
+  start_with: [mi210-llm-stack]
+  then: [mi210-vllm, aiter-cdna2, int8-vllm]
+  why: mi210-llm-stack maps models to serving tiers first; int8-vllm is the MI100 path.
+- id: multi-gpu-build
+  i_want_to: Build a multi-GPU box with working P2P
+  hardware: 2× GPUs on an EPYC-class host
+  architectures: [rdna4, rdna3]
+  typical_reader: Workstation or server builder
+  start_with: [dual-r9700-vllm-proxmox]
+  then: [vllm-radiance-p2p]
+  why: Documents passthrough, P2P and the RCCL patches needed to make P2P work; vllm-radiance-p2p is the RDNA3 equivalent.
+- id: benchmark-endpoint
+  i_want_to: Benchmark an existing endpoint
+  hardware: Any
+  typical_reader: Operator comparing configurations
+  start_with: [betterbench]
+  why: The community's go-to benchmark suite; use it so your numbers are comparable to others'.
+- id: intel-arc
+  i_want_to: Use an Intel Arc GPU
+  hardware: Arc B580
+  architectures: [intel_arc]
+  typical_reader: Intel GPU owner
+  start_with: [krea2-intel-arc-b580]
+  then: [vllm-expert-cache]
+  why: Only Arc datapoint listed; vllm-expert-cache includes Intel porting docs.
+  caveat: No LLM-serving recipe for Arc is listed yet.
+- id: monitor-gpus
+  i_want_to: Monitor my GPUs while tuning
+  hardware: R9700 or V620
+  architectures: [rdna4, rdna2]
+  typical_reader: Anyone running a rig
+  start_with: [r9v]
+  then: [v620-toolbox]
+  why: R9V is actively maintained in-server for the R9700.

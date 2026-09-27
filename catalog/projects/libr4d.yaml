@@ -1,0 +1,22 @@
+id: libr4d
+name: StillDeadcode/libr4d
+tagline: gfx1201-specialized HIP kernel library (pure HIP, llama.cpp-friendly).
+use_it_if: You are developing or tuning kernels for RDNA4 and want a community gfx1201 kernel base.
+kind: kernel_library
+categories: [kernels]
+maturity: unverified
+audience: kernel_hacker
+links:
+  repository: https://codeberg.org/StillDeadcode/libr4d
+people:
+  builders: [Deadcode]
+  contributors: [community contributors]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+software:
+  runtimes: [llama_cpp]
+provides: [custom_kernels]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

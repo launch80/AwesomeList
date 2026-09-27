@@ -1,0 +1,29 @@
+id: deepseek-v41-flash-4x-rtx-pro-6000
+name: 0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000
+tagline: DeepSeek-V4.1-Flash on 4× RTX Pro 6000 at ~200 t/s TG / 7k PP at 8k context.
+use_it_if: You have a 4× RTX Pro 6000 (Blackwell) box and want to serve DeepSeek-V4.1-Flash.
+kind: deployment_guide
+categories: [radiance_ecosystem, multi_gpu]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000
+people:
+  builders: [0xSero]
+  shared_by: [mldatascientist]
+hardware:
+  vendors: [nvidia]
+  architectures: [nvidia_blackwell]
+  gpu_models: [rtx_pro_6000]
+  gpu_count: { min: 4 }
+software:
+  runtimes: [vllm]
+provides: [openai_api]
+supports:
+  model_families: [deepseek]
+  models: [DeepSeek-V4.1-Flash]
+  topologies: [multi_gpu]
+evidence: [deepseek-rtxpro6000x4-v41-flash-8k]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"

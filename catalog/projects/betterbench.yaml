@@ -1,0 +1,21 @@
+id: betterbench
+name: GGZ14/BetterBench
+tagline: The community's go-to benchmark suite for vLLM and llama.cpp endpoints.
+use_it_if: You have a running endpoint and want numbers comparable with what others post in the Discord.
+kind: benchmark_tool
+categories: [benchmarks]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/GGZ14/BetterBench
+people:
+  builders: [The_Candle_Watcher]
+hardware:
+  agnostic: true
+software:
+  runtimes: [vllm, llama_cpp]
+provides: [benchmarking]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"
+notes: Includes a graded code corpus, --runs N, and --quick mode.

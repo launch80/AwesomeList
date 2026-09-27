@@ -1,0 +1,27 @@
+id: zzpanic-gfx1201-launchers
+name: zzpanic/qwen3.6-vllm-gfx1201-launchers
+tagline: The de-facto standard launch scripts for single-R9700 vLLM + DFlash2.
+use_it_if: You have one R9700 and want the most-recommended path to a working Qwen vLLM endpoint.
+kind: launcher
+categories: [launchers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/zzpanic/qwen3.6-vllm-gfx1201-launchers
+people:
+  builders: [zzpanic]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+  gpu_count: { min: 1 }
+software:
+  runtimes: [vllm]
+provides: [openai_api, dflash, speculative_decoding]
+supports:
+  model_families: [qwen3]
+  topologies: [single_gpu]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"
+notes: "The most-recommended starting point in #r9700."

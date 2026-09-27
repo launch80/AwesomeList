@@ -1,0 +1,26 @@
+id: sglang-2x-r9700
+name: mattbucci/2x-R9700-RDNA4-GFX1201-sglang-inference
+tagline: SGLang builds for 2× R9700 — the community's starting point for SGLang on RDNA4.
+use_it_if: You have two R9700s and want SGLang rather than vLLM.
+kind: deployment_guide
+categories: [radiance_ecosystem, multi_gpu]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/mattbucci/2x-R9700-RDNA4-GFX1201-sglang-inference
+people:
+  builders: [mattbucci]
+  shared_by: [blakelemons]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+  gpu_count: { min: 2 }
+software:
+  runtimes: [sglang]
+provides: [openai_api]
+supports:
+  topologies: [dual_gpu]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

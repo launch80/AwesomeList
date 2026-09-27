@@ -1,0 +1,24 @@
+id: llama-cpp-rdna-boosts
+name: stew675/llama-cpp-rdna-boosts
+tagline: llama.cpp performance patches for RDNA3 — the biggest prompt-processing uplift many 7900 XTX owners saw.
+use_it_if: You run llama.cpp on an RDNA3 card and want faster prompt processing without switching runtimes.
+kind: patch_set
+categories: [inference_servers]
+maturity: unverified
+audience: operator
+links:
+  repository: https://github.com/stew675/llama-cpp-rdna-boosts
+  mirrors: [https://github.com/stew675/llama.cpp/tree/rdna-boosts]
+people:
+  builders: [stew675]
+hardware:
+  vendors: [amd]
+  architectures: [rdna3]
+  gpu_models: [rx7900xtx]
+software:
+  runtimes: [llama_cpp]
+provides: [custom_kernels, openai_api]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"
+notes: Also live as the rdna-boosts branch of stew675/llama.cpp. Members report a few hundred t/s of extra prompt processing (no normalized record yet).

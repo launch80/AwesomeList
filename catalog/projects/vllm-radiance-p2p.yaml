@@ -1,0 +1,30 @@
+id: vllm-radiance-p2p
+name: mkadrlik/vllm-radiance-p2p
+tagline: vLLM Radiance adapted for 2× RX 7900 with P2P.
+use_it_if: You have two RX 7900-series cards with P2P and want to serve a 27B AWQ model across the pair.
+kind: runtime_fork
+categories: [inference_servers, multi_gpu]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/mkadrlik/vllm-radiance-p2p
+people:
+  builders: [Froz]
+hardware:
+  vendors: [amd]
+  architectures: [rdna3]
+  gpu_models: [rx7900xtx, rx7900xt]
+  gpu_count: { min: 2 }
+software:
+  runtimes: [vllm]
+  based_on: [vllm-radiance]
+provides: [openai_api, p2p]
+supports:
+  model_families: [qwen3]
+  models: [Qwen3.8-27B AWQ]
+  quantizations: [awq]
+  topologies: [dual_gpu_p2p]
+evidence: [radiance-p2p-7900x2-qwen38-27b-awq]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"

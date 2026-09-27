@@ -1,0 +1,22 @@
+id: opengfx1030-vllm-rdna
+name: opengfx1030/vllm-rdna
+tagline: Work-in-progress community fork merging RDNA2 vLLM work into one shared gfx1030 repo.
+use_it_if: You want to follow or contribute to consolidated vLLM support for RDNA2 (gfx1030).
+kind: runtime_fork
+categories: [inference_servers]
+maturity: experimental
+audience: developer
+links:
+  repository: https://github.com/opengfx1030/vllm-rdna
+people:
+  builders: [BlivionIaG]
+  contributors: [leapdragon]
+hardware:
+  vendors: [amd]
+  architectures: [rdna2]
+software:
+  runtimes: [vllm]
+provides: [openai_api]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

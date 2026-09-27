@@ -1,0 +1,20 @@
+id: aiter-cdna2
+name: davetha/aiter-cdna2
+tagline: Binary-patches AMD AITER (officially CDNA3+) to unlock its fast paths on CDNA2.
+use_it_if: You have MI210/MI250X-class GPUs and want the AITER kernels that most MI210 performance work depends on.
+kind: kernel_library
+categories: [kernels]
+maturity: unverified
+audience: kernel_hacker
+links:
+  repository: https://github.com/davetha/aiter-cdna2
+people:
+  builders: [davetha]
+hardware:
+  vendors: [amd]
+  architectures: [cdna2]
+  gpu_models: [mi210, mi250x]
+provides: [custom_kernels]
+verification:
+  level: unverified
+  listed_since: "2026-09-24"

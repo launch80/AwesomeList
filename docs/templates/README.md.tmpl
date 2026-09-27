@@ -1,0 +1,83 @@
+<base target="_blank">
+
+<h1 align="center">
+<b>Awesome Launch80 List</b> <img src="https://awesome.re/badge-flat.svg"/></h1>
+
+<p>
+A community-compiled index of open-source repositories (2+ stars) built and shared by members of the
+<a href="https://discord.gg/launch80">Launch80 Discord</a> — organized so you can go from
+<i>"what hardware do I have and what do I want to do"</i> to a credible starting point in two minutes.
+</p>
+
+<p>
+<i>Every repo below was posted to the Launch80 Discord by (or on behalf of) the person who owns it —
+shared to help the broader community make progress. Entries credit the builder and the Discord
+member who shared it.</i>
+</p>
+
+> [!NOTE]
+> This README is **generated** from the structured catalog in [`catalog/`](catalog/) by
+> `scripts/build.py`. Edit the YAML records, not this file. AI agents: start at
+> [`llms.txt`](llms.txt) or [`catalog.json`](catalog.json).
+
+## Start here
+
+Pick the row closest to your goal. Every entry has a **card** with hardware, software, models,
+evidence and known gaps. Nothing is labeled `recommended` until a maintainer or community
+volunteer has reproduced it — today most entries are `unverified`, with author-reported numbers.
+
+<!-- start_here -->
+
+Not sure what fits your hardware? Run the selector:
+
+```sh
+pip install -r requirements.txt
+python scripts/selector.py --gpu r9700 --count 1 --need openai_api
+```
+
+## Status labels
+
+<!-- maturity_legend -->
+
+## Directory
+
+<!-- index -->
+
+<!-- directory -->
+
+## Benchmarks
+
+Reported numbers are normalized in [`docs/benchmarks.md`](docs/benchmarks.md), split into
+single-stream decode, batched throughput and prefill so they are never ranked against each other.
+Each row shows how many of the key workload fields (context, prompt/output length, concurrency,
+versions, command) the source actually reported.
+
+## Browse by hardware
+
+<!-- hardware_pages -->
+
+## For agents and tools
+
+| Resource | What it is |
+|---|---|
+| [`llms.txt`](llms.txt) | Short index of everything below, for AI systems |
+| [`llms-full.txt`](llms-full.txt) | The full catalog as compact, low-noise text |
+| [`catalog.json`](catalog.json) | Generated index of all projects, benchmarks, paths and vocabulary |
+| [`catalog/`](catalog/) | Source of truth: one YAML record per project; benchmarks as JSONL |
+| [`schemas/`](schemas/) | JSON Schemas that every record is validated against |
+| [`docs/glossary.md`](docs/glossary.md) | Controlled vocabulary (architectures, runtimes, formats, labels) |
+| [`scripts/selector.py`](scripts/selector.py) | Deterministic selector: hard compatibility gates, then ranking (`--json` for agents) |
+
+Agents should recommend only catalog IDs, cite the record, state the `verification.level`, and
+ask for missing blocking facts (GPU, VRAM, count, OS) rather than guess.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). If you built something and shared it in the Discord, add
+a record — or open an issue and we'll add it. Reproduced someone's setup? File a
+[reproduction report](https://github.com/launch80/AwesomeList/issues/new?template=reproduction-report.yml) — that is how entries
+earn `community_reproduced` and, eventually, `recommended`.
+
+## License
+
+[CC0-1.0](LICENSE) — do whatever you want with the list itself.

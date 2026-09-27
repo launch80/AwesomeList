@@ -1,0 +1,30 @@
+id: vllm-mxfp4
+name: GGZ14/vllm-mxfp4
+tagline: MXFP4 fast path on top of the Radiance image, with online conversion of NVFP4 checkpoints.
+use_it_if: You have R9700s and want the highest reported prefill and decode numbers for 27B-class 4-bit models.
+kind: runtime_fork
+categories: [radiance_ecosystem]
+maturity: unverified
+audience: developer
+links:
+  repository: https://github.com/GGZ14/vllm-mxfp4
+  mirrors: [https://codeberg.org/ggz14/radiance-vllm-mxfp4]
+people:
+  builders: [The_Candle_Watcher]
+hardware:
+  vendors: [amd]
+  architectures: [rdna4]
+  gpu_models: [r9700]
+software:
+  runtimes: [vllm]
+  container: true
+  based_on: [vllm-radiance]
+provides: [openai_api, custom_kernels]
+supports:
+  model_families: [qwen3]
+  models: [Qwen3.8-27B NVFP4]
+  quantizations: [mxfp4, nvfp4]
+evidence: [vllm-mxfp4-r9700-qwen38-27b-nvfp4]
+verification:
+  level: author_reported
+  listed_since: "2026-09-24"
