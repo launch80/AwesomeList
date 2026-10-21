@@ -38,6 +38,8 @@ Selector: `python scripts/selector.py --gpu r9700 --count 1`
   `unverified` · RDNA4 · vLLM · 1 benchmark record · [card →](../projects/vllm-radlight.md)
 - **[malicz/vllm-gfx1201-launchers](https://github.com/malicz/vllm-gfx1201-launchers)** — Single-R9700 Radiance + MXFP4 setup — Dockerfile, model download, MTP conversion and patches. Built by **malicz**.<br>
   `unverified` · RDNA4 · vLLM · 1 benchmark record · [card →](../projects/malicz-gfx1201-launchers.md)
+- **[SlyBase/vllm-sly-radiance](https://github.com/SlyBase/vllm-sly-radiance)** — The fastest single-card R9700 image — vLLM with hand-written MXFP4 kernels, DFlash2 and full 262k context on one 32 GB RDNA4 card. Built by **tf1rst**.<br>
+  `unverified` · RDNA4 · vLLM · 3 benchmark records · [card →](../projects/vllm-sly-radiance.md)
 - **[StillDeadcode/libr4d](https://codeberg.org/StillDeadcode/libr4d)** — gfx1201-specialized HIP kernel library (pure HIP, llama.cpp-friendly). Built by **Deadcode**.<br>
   `unverified` · RDNA4 · llama.cpp · [card →](../projects/libr4d.md)
 - **[StillDeadcode/vllm-radiance](https://codeberg.org/StillDeadcode/vllm-radiance)** — The Radiance vLLM image for gfx1201 — the base most community R9700 forks build on. Built by **Deadcode**.<br>
@@ -52,6 +54,9 @@ Mixed modes — check the Mode column before comparing. See [all benchmarks](../
 | [malicz/vllm-gfx1201-launchers](../projects/malicz-gfx1201-launchers.md) | 1× Radeon AI PRO R9700 | Qwen3.8-27B MXFP4 | mxfp4 | 160K | not reported | ~81 | ~2,380 | vLLM | not_reported | 3/16 | list_entry |
 | [GGZ14/vllm-mxfp4](../projects/vllm-mxfp4.md) | Radeon AI PRO R9700 (count not reported) | Qwen3.8-27B NVFP4 (online MXFP4 conversion) | nvfp4 | not reported | not reported | 276 | 5,809 | vLLM | not_reported | 1/16 | list_entry |
 | [hifi/vllm-radlight](../projects/vllm-radlight.md) | 1× Radeon AI PRO R9700 | Qwen3.8-27B | — | 192K | not reported | ~70 (median) | — | vLLM | not_reported | 2/16 | list_entry |
+| [SlyBase/vllm-sly-radiance](../projects/vllm-sly-radiance.md) | 1× Radeon AI PRO R9700 | Qwen 3.8 27B Quark-AWQ-MXFP4 | mxfp4 | 256K | 8 | 503 | — | vLLM 1.5.1 DFlash2 k=7 + prompt lookup, Cactus delta 0.5 | batched | 8/16 | [repository](https://github.com/SlyBase/vllm-sly-radiance#performance) |
+| [SlyBase/vllm-sly-radiance](../projects/vllm-sly-radiance.md) | 1× Radeon AI PRO R9700 | Qwen 3.8 27B Quark-AWQ-MXFP4 | mxfp4 | 256K | 1 | — | 2,430 | vLLM 1.5.1 DFlash2 k=7 + prompt lookup, Cactus delta 0.5 | single_stream | 9/16 | [repository](https://github.com/SlyBase/vllm-sly-radiance#performance) |
+| [SlyBase/vllm-sly-radiance](../projects/vllm-sly-radiance.md) | 1× Radeon AI PRO R9700 | Qwen 3.8 27B Quark-AWQ-MXFP4 | mxfp4 | 256K | 1 | 150 | — | vLLM 1.5.1 DFlash2 k=7 + prompt lookup, Cactus delta 0.5 | single_stream | 8/16 | [repository](https://github.com/SlyBase/vllm-sly-radiance#performance) |
 | [Capicua25x/vllm-rocm-rdna4](../projects/capicua-vllm-rocm-rdna4.md) | 2× Radeon RX 9070 XT | Qwen 3.8 27B MXFP4 | mxfp4 | 200K | not reported | ~140 (peak) | — | vLLM MTP | batched | 3/16 | list_entry |
 | [Capicua25x/vllm-rocm-rdna4](../projects/capicua-vllm-rocm-rdna4.md) | 2× Radeon RX 9070 XT | Qwen 3.8 27B MXFP4 | mxfp4 | 200K | 1 | ~50 | — | vLLM MTP | single_stream | 4/16 | list_entry |
 

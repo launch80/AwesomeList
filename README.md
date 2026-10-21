@@ -178,7 +178,7 @@ python scripts/selector.py --gpu r9700 --count 1 --need openai_api
 - `historical` — Useful reference, but no longer the suggested default.
 - `unverified` — Submitted but not yet reproduced by a maintainer or community volunteer.
 
-Currently: 1 supported, 2 experimental, 32 unverified.
+Currently: 1 supported, 2 experimental, 33 unverified.
 
 ## Directory
 
@@ -227,7 +227,7 @@ Currently: 1 supported, 2 experimental, 32 unverified.
 - **[davetha/krea2-intel-arc-b580](https://github.com/davetha/krea2-intel-arc-b580)** — Krea2 image-model test harness on Intel Arc B580. Built by **davetha**.<br>
   `unverified` · Intel Arc · diffusion · [card →](docs/projects/krea2-intel-arc-b580.md)
 
-*Also relevant here:* [hifi/vllm-radlight](docs/projects/vllm-radlight.md) · [StillDeadcode/vllm-radiance](docs/projects/vllm-radiance.md)
+*Also relevant here:* [hifi/vllm-radlight](docs/projects/vllm-radlight.md) · [SlyBase/vllm-sly-radiance](docs/projects/vllm-sly-radiance.md) · [StillDeadcode/vllm-radiance](docs/projects/vllm-radiance.md)
 
 ### vLLM / Radiance Ecosystem
 
@@ -239,6 +239,8 @@ Currently: 1 supported, 2 experimental, 32 unverified.
   `unverified` · NVIDIA Blackwell · 4+ GPUs · vLLM · 1 benchmark record · [card →](docs/projects/deepseek-v41-flash-4x-rtx-pro-6000.md)
 - **[hifi/vllm-radlight](https://codeberg.org/hifi/vllm-radlight)** — Lightweight vLLM variant; median decode above 70 t/s on one R9700 with Qwen3.8-27B at 192K context. Built by **hifi**.<br>
   `unverified` · RDNA4 · vLLM · 1 benchmark record · [card →](docs/projects/vllm-radlight.md)
+- **[SlyBase/vllm-sly-radiance](https://github.com/SlyBase/vllm-sly-radiance)** — The fastest single-card R9700 image — vLLM with hand-written MXFP4 kernels, DFlash2 and full 262k context on one 32 GB RDNA4 card. Built by **tf1rst**.<br>
+  `unverified` · RDNA4 · vLLM · 3 benchmark records · [card →](docs/projects/vllm-sly-radiance.md)
 - **[StillDeadcode/vllm-radiance](https://codeberg.org/StillDeadcode/vllm-radiance)** — The Radiance vLLM image for gfx1201 — the base most community R9700 forks build on. Built by **Deadcode**.<br>
   `unverified` · RDNA4 · vLLM · [card →](docs/projects/vllm-radiance.md)
 - **[tonyd2wild/Minimax-M3-NVFP-3x-DGX-Sparks-TP-3](https://github.com/tonyd2wild/Minimax-M3-NVFP-3x-DGX-Sparks-TP-3)** — MiniMax-M3 NVFP4 across 3× DGX Spark with tensor parallelism 3. Built by **tonyd2wild**, shared by @The_Candle_Watcher.<br>

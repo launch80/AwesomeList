@@ -16,6 +16,7 @@ One request at a time: what a single user feels.
 
 | Project | GPUs | Model | Quant | Context | Concurrency | Decode tok/s | Runtime | Mode | Fields reported | Source |
 |---|---|---|---|---|---|---|---|---|---|---|
+| [SlyBase/vllm-sly-radiance](projects/vllm-sly-radiance.md) | 1× Radeon AI PRO R9700 | Qwen 3.8 27B Quark-AWQ-MXFP4 | mxfp4 | 256K | 1 | 150 | vLLM 1.5.1 DFlash2 k=7 + prompt lookup, Cactus delta 0.5 | single_stream | 8/16 | [repository](https://github.com/SlyBase/vllm-sly-radiance#performance) |
 | [Capicua25x/vllm-rocm-rdna4](projects/capicua-vllm-rocm-rdna4.md) | 2× Radeon RX 9070 XT | Qwen 3.8 27B MXFP4 | mxfp4 | 200K | 1 | ~50 | vLLM MTP | single_stream | 4/16 | list_entry |
 
 ## Decode — batched (aggregate)
@@ -24,6 +25,7 @@ Total decode throughput across concurrent requests.
 
 | Project | GPUs | Model | Quant | Context | Concurrency | Decode tok/s | Runtime | Mode | Fields reported | Source |
 |---|---|---|---|---|---|---|---|---|---|---|
+| [SlyBase/vllm-sly-radiance](projects/vllm-sly-radiance.md) | 1× Radeon AI PRO R9700 | Qwen 3.8 27B Quark-AWQ-MXFP4 | mxfp4 | 256K | 8 | 503 | vLLM 1.5.1 DFlash2 k=7 + prompt lookup, Cactus delta 0.5 | batched | 8/16 | [repository](https://github.com/SlyBase/vllm-sly-radiance#performance) |
 | [Capicua25x/vllm-rocm-rdna4](projects/capicua-vllm-rocm-rdna4.md) | 2× Radeon RX 9070 XT | Qwen 3.8 27B MXFP4 | mxfp4 | 200K | not reported | ~140 (peak) | vLLM MTP | batched | 3/16 | list_entry |
 | [leapdragon/vllm-rdna2-recipe](projects/vllm-rdna2-recipe.md) | 4× Radeon Pro V620 | not reported | — | not reported | 8 | ~150 | vLLM | batched | 2/16 | list_entry |
 
@@ -36,6 +38,7 @@ Prompt-processing speed. Mode is shown per row.
 | [curvedinf/int8-vllm](projects/int8-vllm.md) | 4× Instinct MI100 | Qwen3.8-27B C8 | int8 | not reported | not reported | 5,680 | vLLM | not_reported | 2/16 | [reddit](https://www.reddit.com/r/LocalLLaMA/comments/1vz9hqa/qwen38_27b_c8_at_972_tg_5680_pp_on_4x_mi100_rig/) |
 | [malicz/vllm-gfx1201-launchers](projects/malicz-gfx1201-launchers.md) | 1× Radeon AI PRO R9700 | Qwen3.8-27B MXFP4 | mxfp4 | 160K | not reported | ~2,380 | vLLM | not_reported | 3/16 | list_entry |
 | [GGZ14/vllm-mxfp4](projects/vllm-mxfp4.md) | Radeon AI PRO R9700 (count not reported) | Qwen3.8-27B NVFP4 (online MXFP4 conversion) | nvfp4 | not reported | not reported | 5,809 | vLLM | not_reported | 1/16 | list_entry |
+| [SlyBase/vllm-sly-radiance](projects/vllm-sly-radiance.md) | 1× Radeon AI PRO R9700 | Qwen 3.8 27B Quark-AWQ-MXFP4 | mxfp4 | 256K | 1 | 2,430 | vLLM 1.5.1 DFlash2 k=7 + prompt lookup, Cactus delta 0.5 | single_stream | 9/16 | [repository](https://github.com/SlyBase/vllm-sly-radiance#performance) |
 | [0xSero/deepseek-v4.1-flash-4x-rtx-pro-6000](projects/deepseek-v41-flash-4x-rtx-pro-6000.md) | 4× RTX Pro 6000 Blackwell | DeepSeek-V4.1-Flash | — | 8K | not reported | ~7,000 | not reported | not_reported | 2/16 | list_entry |
 
 ## Decode — concurrency not reported

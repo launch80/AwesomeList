@@ -79,5 +79,6 @@ Cite record IDs. Ask the user for GPU model, GPU count, VRAM and OS if they are 
 - [vllm-radlight](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-radlight.md): Lightweight vLLM variant; median decode above 70 t/s on one R9700 with Qwen3.8-27B at 192K context.
 - [vllm-rdna2-qwen](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-rdna2-qwen.md): vLLM fork for 4× V620 — ~70 t/s with MTP=3 on Qwen3.8-Flash-Next W4A16.
 - [vllm-rdna2-recipe](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-rdna2-recipe.md): Deployment recipe for vLLM on RDNA2, including a fix for prefill blocking generation.
+- [vllm-sly-radiance](https://github.com/launch80/AwesomeList/blob/main/docs/projects/vllm-sly-radiance.md): The fastest single-card R9700 image — vLLM with hand-written MXFP4 kernels, DFlash2 and full 262k context on one 32 GB RDNA4 card.
 - [webbrain](https://github.com/launch80/AwesomeList/blob/main/docs/projects/webbrain.md): Community-shared knowledge project mentioned in #hang-out.
 - [zzpanic-gfx1201-launchers](https://github.com/launch80/AwesomeList/blob/main/docs/projects/zzpanic-gfx1201-launchers.md): The de-facto standard launch scripts for single-R9700 vLLM + DFlash2.

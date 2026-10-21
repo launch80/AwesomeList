@@ -26,7 +26,7 @@
 
 Built by **Deadcode**.
 
-**Built on by:** [magiccodingman/vllm-radiance](magiccodingman-vllm-radiance.md) · [GGZ14/vllm-mxfp4](vllm-mxfp4.md) · [malicz/vllm-gfx1201-launchers](malicz-gfx1201-launchers.md) · [mkadrlik/vllm-radiance-p2p](vllm-radiance-p2p.md)
+**Built on by:** [magiccodingman/vllm-radiance](magiccodingman-vllm-radiance.md) · [GGZ14/vllm-mxfp4](vllm-mxfp4.md) · [malicz/vllm-gfx1201-launchers](malicz-gfx1201-launchers.md) · [mkadrlik/vllm-radiance-p2p](vllm-radiance-p2p.md) · [SlyBase/vllm-sly-radiance](vllm-sly-radiance.md)
 
 **Quick start:**
 
