@@ -66,6 +66,12 @@
   architecture: intel_arc
   gfx_target: null
   vram_gb: 12
+- id: arc_pro_b65
+  name: Arc Pro B65
+  vendor: intel
+  architecture: intel_arc
+  gfx_target: null
+  vram_gb: 32
 - id: rtx_pro_6000
   name: RTX Pro 6000 Blackwell
   vendor: nvidia

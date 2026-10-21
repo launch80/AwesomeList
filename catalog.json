@@ -25,7 +25,7 @@
       "cdna": "AMD CDNA1 datacenter GPUs (gfx908), e.g. Instinct MI100.",
       "cdna2": "AMD CDNA2 datacenter GPUs (gfx90a), e.g. Instinct MI210 / MI250X.",
       "cdna3": "AMD CDNA3 datacenter GPUs (gfx942), e.g. Instinct MI300X.",
-      "intel_arc": "Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580.",
+      "intel_arc": "Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580, Arc Pro B65.",
       "nvidia_blackwell": "NVIDIA Blackwell GPUs, e.g. RTX Pro 6000, DGX Spark (GB10)."
     },
     "runtime": {
@@ -238,6 +238,14 @@
       "vram_gb": 12
     },
     {
+      "id": "arc_pro_b65",
+      "name": "Arc Pro B65",
+      "vendor": "intel",
+      "architecture": "intel_arc",
+      "gfx_target": null,
+      "vram_gb": 32
+    },
+    {
       "id": "rtx_pro_6000",
       "name": "RTX Pro 6000 Blackwell",
       "vendor": "nvidia",
@@ -398,19 +406,20 @@
     {
       "id": "intel-arc",
       "i_want_to": "Use an Intel Arc GPU",
-      "hardware": "Arc B580",
+      "hardware": "Arc Pro B65 or Arc B580",
       "architectures": [
         "intel_arc"
       ],
       "typical_reader": "Intel GPU owner",
       "start_with": [
-        "krea2-intel-arc-b580"
+        "b65"
       ],
       "then": [
+        "krea2-intel-arc-b580",
         "vllm-expert-cache"
       ],
-      "why": "Only Arc datapoint listed; vllm-expert-cache includes Intel porting docs.",
-      "caveat": "No LLM-serving recipe for Arc is listed yet."
+      "why": "B65 is the only Arc LLM-serving setup listed, with a recipe and BetterBench numbers; krea2 is an image-model datapoint on the B580, and vllm-expert-cache includes Intel porting docs.",
+      "caveat": "B65 is measured on one 32 GB Arc Pro B65 only; smaller Arc cards are untested."
     },
     {
       "id": "monitor-gpus",
@@ -500,6 +509,113 @@
       },
       "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/alloyium.md",
       "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/alloyium.yaml"
+    },
+    {
+      "id": "b65",
+      "name": "launch80/B65",
+      "tagline": "Qwen3.8-27B at 71.8 tok/s on one Arc Pro B65 — a baked INT4 checkpoint that stock vLLM XPU loads without weight patches.",
+      "use_it_if": "You have an Intel Arc Pro B-series card and want a measured, quality-gated Qwen3.8-27B setup on vLLM XPU with MTP or DFlash2 speculative decoding.",
+      "kind": "patch_set",
+      "categories": [
+        "launchers",
+        "inference_servers"
+      ],
+      "maturity": "experimental",
+      "audience": "developer",
+      "description": "A single-card Arc Pro B65 32 GB project that speeds up batch-1 decode by making the model read fewer bytes per token. The INT4 lm_head and INT4 MTP draft layer are baked to disk in the body's GPTQ INT4 g128 layout (published as Launch80/Qwen3.8-27B-GPTQ-Int4-baked), and a runtime patch limits the draft to the first 32,768 vocabulary rows. Decode went from 24.7 to 71.8 tok/s in the shipped config on vLLM 0.27.2 XPU (BetterBench, single stream). A later INT4-baked DFlash2 drafter reaches 96.7 tok/s on a Swift-1.5 bake with vLLM 0.30.0. The repo also includes the quality gates (perplexity, paired GSM8K, greedy invariance), the bake tooling, and a 3-bit GEMV kernel the author measured and rejected.\n",
+      "links": {
+        "repository": "https://github.com/launch80/B65"
+      },
+      "people": {
+        "builders": [
+          "launch80"
+        ],
+        "contributors": [
+          "Wrapzii"
+        ]
+      },
+      "hardware": {
+        "vendors": [
+          "intel"
+        ],
+        "architectures": [
+          "intel_arc"
+        ],
+        "gpu_models": [
+          "arc_pro_b65"
+        ],
+        "gpu_count": {
+          "min": 1
+        },
+        "host_notes": "Author's box: Core Ultra 7 270K, 30 GB RAM, B65 in a chipset PCIe 4.0 x4 slot (decode reads VRAM, not the bus). On a host with several Intel GPUs, pass the render node by PCI address (GPU_BDF); ZE_AFFINITY_MASK=0 alone can select the wrong card."
+      },
+      "software": {
+        "runtimes": [
+          "vllm"
+        ],
+        "os": [
+          "ubuntu"
+        ],
+        "os_versions": [
+          "26.04"
+        ],
+        "container": true,
+        "stack_notes": "As stated by the author: vllm/vllm-openai-xpu 0.27.2 nightly (pinned by digest in run.sh) for the baked-checkpoint numbers; vllm-openai-xpu 0.30.0 for DFlash2. Correctness patches from SergiioB's B70 cookbook (MTP nightly, MTP boundary, GDN mixed-split v5) are applied at container start."
+      },
+      "provides": [
+        "openai_api",
+        "tool_calling",
+        "speculative_decoding",
+        "mtp",
+        "dflash",
+        "continuous_batching",
+        "long_context"
+      ],
+      "supports": {
+        "model_families": [
+          "qwen3"
+        ],
+        "models": [
+          "Launch80/Qwen3.8-27B-GPTQ-Int4-baked",
+          "Launch80/Qwen3.8-27B-GPTQ-Int4-baked-v2",
+          "Launch80/Swift-1.5-Qwen3.8-27B-Uncensored-Int4-baked",
+          "Launch80/Qwen3.8-27B-DFlash2-Int4-baked-drafter (drafter)",
+          "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16 (with boot-time patches)"
+        ],
+        "quantizations": [
+          "w4a16"
+        ],
+        "topologies": [
+          "single_gpu"
+        ]
+      },
+      "quick_start": "vllm serve Launch80/Qwen3.8-27B-GPTQ-Int4-baked --quantization gptq --dtype float16 \\\n  --kv-cache-dtype fp8 --max-num-seqs 32 --max-model-len 32768 \\\n  --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\":6}'\n",
+      "known_issues": [
+        "With MTP on, the engine dies under concurrent load unless the GDN mixed-split patch is applied (on by default in the repo's launchers).",
+        "MTP emits garbage on prompts under about 8 tokens, even with the stock fp16 head and no patches.",
+        "logprobs and prompt_logprobs return NaN whenever MTP is enabled; run perplexity with speculation off.",
+        "Hybrid GDN models fail engine start at vLLM's default max_num_seqs of 256; use 32.",
+        "bake/serve-baked.sh at commit 43e02c1 reads $HERE before setting it, so under set -u it exits with 'HERE: unbound variable' unless DFLASH_DIR is set."
+      ],
+      "evidence": [
+        "b65-arc-pro-b65-qwen38-27b-baked-single",
+        "b65-arc-pro-b65-qwen38-27b-baked-conc8",
+        "b65-arc-pro-b65-qwen38-27b-baked-v2-single",
+        "b65-arc-pro-b65-swift15-mtp6-single",
+        "b65-arc-pro-b65-swift15-dflash2-int4-single"
+      ],
+      "recipes": [
+        "arc-pro-b65-qwen38-27b-w4a16-vllm"
+      ],
+      "notes": "Builds on SergiioB/intel-arc-pro-b70-inference-cookbook (pinned image, MTP patches, base checkpoint, crash fix). The README says the cookbook patches are not redistributed, but commit 43e02c1 added patch_mtp_nightly.py, patch_mtp_boundary.py and patch_gdn_mixed_split_v5.py to patches/. The card is firmware-capped at 200 W / 2400 MHz. 71.8 is decode-only with short prompts; the author reports ~48 tok/s end-to-end through a coding agent at 21k context. The baked-v2 checkpoint (73.5 tok/s) has not been through the quality gates. An embed-INT8 derivative (bake/bake_embed_quant.py) frees ~1.15 GiB for KV cache on a 24 GiB B60.\n",
+      "verification": {
+        "level": "author_reported",
+        "last_verified": "2026-10-20",
+        "last_commit_checked": "43e02c1",
+        "listed_since": "2026-10-20"
+      },
+      "_card_url": "https://github.com/launch80/AwesomeList/blob/main/docs/projects/b65.md",
+      "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/b65.yaml"
     },
     {
       "id": "betterbench",
@@ -2368,8 +2484,347 @@
       "_record_url": "https://raw.githubusercontent.com/launch80/AwesomeList/main/catalog/projects/zzpanic-gfx1201-launchers.yaml"
     }
   ],
-  "recipes": [],
+  "recipes": [
+    {
+      "id": "arc-pro-b65-qwen38-27b-w4a16-vllm",
+      "title": "Serve the baked Qwen3.8-27B GPTQ-Int4 checkpoint with MTP k=6 on one Arc Pro B65",
+      "projects": [
+        "b65"
+      ],
+      "maturity": "experimental",
+      "audience": "developer",
+      "goal": {
+        "provides": [
+          "openai_api",
+          "speculative_decoding",
+          "mtp",
+          "tool_calling"
+        ],
+        "priorities": [
+          "throughput"
+        ]
+      },
+      "compatibility": {
+        "architectures": [
+          "intel_arc"
+        ],
+        "gpu_models": [
+          "arc_pro_b65"
+        ],
+        "min_vram_gb": 32,
+        "gpu_count": {
+          "min": 1,
+          "max": 1
+        },
+        "topology": "single_gpu",
+        "os": [
+          "ubuntu"
+        ],
+        "os_versions": [
+          "26.04"
+        ]
+      },
+      "model": {
+        "artifact": "Launch80/Qwen3.8-27B-GPTQ-Int4-baked",
+        "family": "qwen3",
+        "quantization": "w4a16",
+        "context_length": 32768
+      },
+      "dependencies": {
+        "required": [
+          "docker",
+          "intel_xe_driver"
+        ]
+      },
+      "steps": [
+        {
+          "id": "preflight",
+          "description": "Find the B65's render node by PCI address. On a host with more than one Intel GPU, ZE_AFFINITY_MASK=0 alone can pick the wrong card.",
+          "command": "ls -l /dev/dri/by-path/ | grep render",
+          "expected": "A pci-<BDF>-render entry for the Arc Pro B65 (0000:86:00.0 on the author's box)"
+        },
+        {
+          "id": "clone",
+          "command": "git clone https://github.com/launch80/B65 && cd B65 && git checkout 43e02c1"
+        },
+        {
+          "id": "download_model",
+          "command": "huggingface-cli download Launch80/Qwen3.8-27B-GPTQ-Int4-baked --local-dir \"$HOME/bake-model\""
+        },
+        {
+          "id": "install",
+          "command": "docker pull vllm/vllm-openai-xpu@sha256:f01e24f6c7ff01f1e0662234255a1372297d1dbd89d003cf13c8fad3eab1ba4f"
+        },
+        {
+          "id": "launch",
+          "description": "Runs the MTP nightly, MTP boundary and GDN mixed-split patches plus the draft-vocab prefix patch, then vllm serve with GPTQ, fp16, fp8 KV, max-num-seqs 32 and MTP k=6. IMAGE pins the 0.27.2 nightly the numbers were measured on (the script now defaults to 0.30.0). DFLASH_DIR works around the unbound $HERE in serve-baked.sh at this commit.\n",
+          "command": "IMAGE=vllm/vllm-openai-xpu@sha256:f01e24f6c7ff01f1e0662234255a1372297d1dbd89d003cf13c8fad3eab1ba4f BAKED=\"$HOME/bake-model\" GPU_BDF=<your B65 PCI address> MAX_LEN=32768 SPEC=6 PORT=8002 DFLASH_DIR=\"$PWD/patches\" ./bake/serve-baked.sh",
+          "expected": "Server log shows 'Detected MTP model. Sharing target model lm_head weights with the draft model.' and a 'P608-R6] draft head' line"
+        },
+        {
+          "id": "smoke_test",
+          "description": "Use a prompt longer than ~8 tokens; MTP produces garbage on very short prompts.",
+          "command": "curl -s localhost:8002/v1/chat/completions -H 'Content-Type: application/json' -d '{\"model\":\"launch80/Qwen3.8-27B-GPTQ-Int4-baked\",\"messages\":[{\"role\":\"user\",\"content\":\"Count to five, one number per line.\"}],\"max_tokens\":24}'",
+          "expected": "A JSON chat.completion response"
+        },
+        {
+          "id": "benchmark",
+          "command": "betterbench run --endpoint http://127.0.0.1:8002/v1 --model launch80/Qwen3.8-27B-GPTQ-Int4-baked --out betterbench-baked-r6on.json",
+          "expected": "Category-weighted single-stream decode around 71.8 tok/s"
+        }
+      ],
+      "success_criteria": [
+        "Endpoint returns an OpenAI-compatible response",
+        "BetterBench weighted single-stream decode near 71.8 tok/s"
+      ],
+      "rollback": "docker rm -f vllm-baked",
+      "known_failures": [
+        {
+          "symptom": "serve-baked.sh exits immediately with 'HERE: unbound variable'",
+          "likely_causes": [
+            "DFLASH_DIR default references $HERE before it is set"
+          ],
+          "fix": "Set DFLASH_DIR (for example DFLASH_DIR=\"$PWD/patches\") when launching."
+        },
+        {
+          "symptom": "EngineCore dies under concurrent load: 'causal_conv1d does not support spec-decode and non-spec ... in the same invocation'",
+          "likely_causes": [
+            "GDN mixed-split patch not applied"
+          ],
+          "fix": "Keep SPEC non-zero so serve-baked.sh applies patch_gdn_mixed_split_v5.py."
+        },
+        {
+          "symptom": "Engine fails to start with \"exceeds available Mamba cache blocks\"",
+          "likely_causes": [
+            "max_num_seqs left at vLLM's default of 256"
+          ],
+          "fix": "Use MAX_SEQS=32 (the script default)."
+        },
+        {
+          "symptom": "logprobs or prompt_logprobs come back NaN",
+          "likely_causes": [
+            "MTP speculative decoding enabled"
+          ],
+          "fix": "Run perplexity and other logprob checks with SPEC=0."
+        }
+      ],
+      "evidence": [
+        "b65-arc-pro-b65-qwen38-27b-baked-single",
+        "b65-arc-pro-b65-qwen38-27b-baked-conc8"
+      ],
+      "verification": {
+        "level": "author_reported",
+        "last_verified": "2026-09-08",
+        "last_commit_checked": "43e02c1",
+        "tested_by": [
+          "launch80"
+        ]
+      }
+    }
+  ],
   "benchmarks": [
+    {
+      "id": "b65-arc-pro-b65-qwen38-27b-baked-conc8",
+      "project": "b65",
+      "recipe": "arc-pro-b65-qwen38-27b-w4a16-vllm",
+      "mode": "batched",
+      "hardware": {
+        "gpu_model": "arc_pro_b65",
+        "gpu_count": 1
+      },
+      "platform": {
+        "os": "Ubuntu 26.04",
+        "kernel": "7.0.0-30-generic"
+      },
+      "runtime": {
+        "name": "vllm",
+        "version": "0.27.2 (vllm-openai-xpu nightly)",
+        "speculative": "MTP k=6, draft vocab prefix 32768"
+      },
+      "model": {
+        "name": "Qwen3.8-27B GPTQ-Int4 baked",
+        "artifact": "Launch80/Qwen3.8-27B-GPTQ-Int4-baked",
+        "family": "qwen3",
+        "quantization": "w4a16"
+      },
+      "workload": {
+        "context_length": 32768,
+        "concurrency": 8,
+        "tool": "BetterBench 0.4.0 default config"
+      },
+      "metrics": {
+        "decode_tok_s": 196.3,
+        "statistic": "mean"
+      },
+      "measured_on": "2026-09-08",
+      "source": {
+        "type": "repository",
+        "url": "https://github.com/launch80/B65/blob/main/results/bake-betterbench-baked-r6on.json",
+        "recorded_on": "2026-10-20"
+      },
+      "notes": "BetterBench aggregate_tps at concurrency 8 (48 requests), read from the raw results JSON; 191.6 at concurrency 16."
+    },
+    {
+      "id": "b65-arc-pro-b65-qwen38-27b-baked-single",
+      "project": "b65",
+      "recipe": "arc-pro-b65-qwen38-27b-w4a16-vllm",
+      "mode": "single_stream",
+      "hardware": {
+        "gpu_model": "arc_pro_b65",
+        "gpu_count": 1
+      },
+      "platform": {
+        "os": "Ubuntu 26.04",
+        "kernel": "7.0.0-30-generic"
+      },
+      "runtime": {
+        "name": "vllm",
+        "version": "0.27.2 (vllm-openai-xpu nightly)",
+        "speculative": "MTP k=6, draft vocab prefix 32768"
+      },
+      "model": {
+        "name": "Qwen3.8-27B GPTQ-Int4 baked",
+        "artifact": "Launch80/Qwen3.8-27B-GPTQ-Int4-baked",
+        "family": "qwen3",
+        "quantization": "w4a16"
+      },
+      "workload": {
+        "context_length": 32768,
+        "concurrency": 1,
+        "tool": "BetterBench 0.4.0 default config"
+      },
+      "metrics": {
+        "decode_tok_s": 71.8,
+        "statistic": "mean"
+      },
+      "measured_on": "2026-09-08",
+      "source": {
+        "type": "repository",
+        "url": "https://github.com/launch80/B65/blob/main/results/bake-betterbench-baked-r6on.json",
+        "recorded_on": "2026-10-20"
+      },
+      "notes": "Category-weighted mean decode. One Arc Pro B65 at its firmware 200 W cap, fp8 KV cache, the shipped config (GDN mixed-split fix on, graph capture off). Passed the repo's perplexity, paired GSM8K and greedy-invariance gates."
+    },
+    {
+      "id": "b65-arc-pro-b65-qwen38-27b-baked-v2-single",
+      "project": "b65",
+      "mode": "single_stream",
+      "hardware": {
+        "gpu_model": "arc_pro_b65",
+        "gpu_count": 1
+      },
+      "platform": {
+        "os": "Ubuntu 26.04",
+        "kernel": "7.0.0-31-generic"
+      },
+      "runtime": {
+        "name": "vllm",
+        "version": "0.27.2 (vllm-openai-xpu nightly)",
+        "speculative": "MTP k=6, draft vocab prefix 32768"
+      },
+      "model": {
+        "name": "Qwen3.8-27B GPTQ-Int4 baked v2",
+        "artifact": "Launch80/Qwen3.8-27B-GPTQ-Int4-baked-v2",
+        "family": "qwen3",
+        "quantization": "w4a16"
+      },
+      "workload": {
+        "context_length": 32768,
+        "concurrency": 1,
+        "tool": "BetterBench 0.4.0 default config"
+      },
+      "metrics": {
+        "decode_tok_s": 73.5,
+        "statistic": "mean"
+      },
+      "measured_on": "2026-09-10",
+      "source": {
+        "type": "repository",
+        "url": "https://github.com/launch80/B65/blob/main/results/bake-v2-betterbench-k6.json",
+        "recorded_on": "2026-10-20"
+      },
+      "notes": "Same bake on MikeCaldera's GPTQ quant of the same base model, same config and harness as the v1 run. The author notes v2 has not been through the quality gates."
+    },
+    {
+      "id": "b65-arc-pro-b65-swift15-dflash2-int4-single",
+      "project": "b65",
+      "mode": "single_stream",
+      "hardware": {
+        "gpu_model": "arc_pro_b65",
+        "gpu_count": 1
+      },
+      "platform": {
+        "os": "Ubuntu 26.04",
+        "kernel": "7.0.0-38-generic"
+      },
+      "runtime": {
+        "name": "vllm",
+        "version": "0.30.0 (vllm-openai-xpu)",
+        "speculative": "DFlash2 INT4 drafter k=7"
+      },
+      "model": {
+        "name": "Swift-1.5 Qwen3.8-27B Uncensored Int4 baked + DFlash2 Int4 drafter",
+        "artifact": "Launch80/Swift-1.5-Qwen3.8-27B-Uncensored-Int4-baked",
+        "family": "qwen3",
+        "quantization": "w4a16"
+      },
+      "workload": {
+        "context_length": 131072,
+        "concurrency": 1,
+        "tool": "BetterBench 0.4.0 quick run (5 runs per category)"
+      },
+      "metrics": {
+        "decode_tok_s": 96.7,
+        "statistic": "median"
+      },
+      "measured_on": "2026-10-13",
+      "source": {
+        "type": "repository",
+        "url": "https://github.com/launch80/B65/blob/main/docs/dflash2.md",
+        "recorded_on": "2026-10-20"
+      },
+      "notes": "Category-weighted median decode, fp8 KV cache. Drafter Launch80/Qwen3.8-27B-DFlash2-Int4-baked-drafter run in bf16 via patches/patch_dflash_mixed_dtype.py. Author reports GSM8K 94/100 and greedy spec-on == spec-off 16/16."
+    },
+    {
+      "id": "b65-arc-pro-b65-swift15-mtp6-single",
+      "project": "b65",
+      "mode": "single_stream",
+      "hardware": {
+        "gpu_model": "arc_pro_b65",
+        "gpu_count": 1
+      },
+      "platform": {
+        "os": "Ubuntu 26.04",
+        "kernel": "7.0.0-38-generic"
+      },
+      "runtime": {
+        "name": "vllm",
+        "version": "0.30.0 (vllm-openai-xpu)",
+        "speculative": "MTP k=6"
+      },
+      "model": {
+        "name": "Swift-1.5 Qwen3.8-27B Uncensored Int4 baked",
+        "artifact": "Launch80/Swift-1.5-Qwen3.8-27B-Uncensored-Int4-baked",
+        "family": "qwen3",
+        "quantization": "w4a16"
+      },
+      "workload": {
+        "context_length": 262144,
+        "concurrency": 1,
+        "tool": "BetterBench 0.4.0 quick run (5 runs per category)"
+      },
+      "metrics": {
+        "decode_tok_s": 80.5,
+        "statistic": "median"
+      },
+      "measured_on": "2026-10-13",
+      "source": {
+        "type": "repository",
+        "url": "https://github.com/launch80/B65/blob/main/docs/dflash2.md",
+        "recorded_on": "2026-10-20"
+      },
+      "notes": "Category-weighted median decode, fp8 KV cache. Baseline for the DFlash2 drafter run on the same checkpoint."
+    },
     {
       "id": "capicua-9070xt-x2-qwen38-27b-mxfp4-batched",
       "project": "capicua-vllm-rocm-rdna4",

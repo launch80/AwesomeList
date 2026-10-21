@@ -72,13 +72,13 @@
   why: The community's go-to benchmark suite; use it so your numbers are comparable to others'.
 - id: intel-arc
   i_want_to: Use an Intel Arc GPU
-  hardware: Arc B580
+  hardware: Arc Pro B65 or Arc B580
   architectures: [intel_arc]
   typical_reader: Intel GPU owner
-  start_with: [krea2-intel-arc-b580]
-  then: [vllm-expert-cache]
-  why: Only Arc datapoint listed; vllm-expert-cache includes Intel porting docs.
-  caveat: No LLM-serving recipe for Arc is listed yet.
+  start_with: [b65]
+  then: [krea2-intel-arc-b580, vllm-expert-cache]
+  why: B65 is the only Arc LLM-serving setup listed, with a recipe and BetterBench numbers; krea2 is an image-model datapoint on the B580, and vllm-expert-cache includes Intel porting docs.
+  caveat: B65 is measured on one 32 GB Arc Pro B65 only; smaller Arc cards are untested.
 - id: monitor-gpus
   i_want_to: Monitor my GPUs while tuning
   hardware: R9700 or V620

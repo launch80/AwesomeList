@@ -34,7 +34,7 @@
         "intel_arc",
         "nvidia_blackwell"
       ],
-      "description": "rdna2: AMD RDNA2 consumer/workstation GPUs (gfx103x), e.g. Radeon Pro V620.; rdna3: AMD RDNA3 consumer/workstation GPUs (gfx110x), e.g. RX 7900 XTX.; rdna3_5: AMD RDNA3.5 APUs (gfx115x), e.g. Strix Halo / Strix Point.; rdna4: AMD RDNA4 GPUs (gfx120x), e.g. Radeon AI PRO R9700, RX 9070 XT.; cdna: AMD CDNA1 datacenter GPUs (gfx908), e.g. Instinct MI100.; cdna2: AMD CDNA2 datacenter GPUs (gfx90a), e.g. Instinct MI210 / MI250X.; cdna3: AMD CDNA3 datacenter GPUs (gfx942), e.g. Instinct MI300X.; intel_arc: Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580.; nvidia_blackwell: NVIDIA Blackwell GPUs, e.g. RTX Pro 6000, DGX Spark (GB10)."
+      "description": "rdna2: AMD RDNA2 consumer/workstation GPUs (gfx103x), e.g. Radeon Pro V620.; rdna3: AMD RDNA3 consumer/workstation GPUs (gfx110x), e.g. RX 7900 XTX.; rdna3_5: AMD RDNA3.5 APUs (gfx115x), e.g. Strix Halo / Strix Point.; rdna4: AMD RDNA4 GPUs (gfx120x), e.g. Radeon AI PRO R9700, RX 9070 XT.; cdna: AMD CDNA1 datacenter GPUs (gfx908), e.g. Instinct MI100.; cdna2: AMD CDNA2 datacenter GPUs (gfx90a), e.g. Instinct MI210 / MI250X.; cdna3: AMD CDNA3 datacenter GPUs (gfx942), e.g. Instinct MI300X.; intel_arc: Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580, Arc Pro B65.; nvidia_blackwell: NVIDIA Blackwell GPUs, e.g. RTX Pro 6000, DGX Spark (GB10)."
     },
     "runtime": {
       "enum": [

@@ -19,7 +19,7 @@ architecture:
   cdna: AMD CDNA1 datacenter GPUs (gfx908), e.g. Instinct MI100.
   cdna2: AMD CDNA2 datacenter GPUs (gfx90a), e.g. Instinct MI210 / MI250X.
   cdna3: AMD CDNA3 datacenter GPUs (gfx942), e.g. Instinct MI300X.
-  intel_arc: Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580.
+  intel_arc: Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580, Arc Pro B65.
   nvidia_blackwell: NVIDIA Blackwell GPUs, e.g. RTX Pro 6000, DGX Spark (GB10).
 
 runtime:
