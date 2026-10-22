@@ -34,7 +34,7 @@ Cite record IDs. Ask the user for GPU model, GPU count, VRAM and OS if they are 
 - [Run fast inference on MI210 / MI100](https://github.com/launch80/AwesomeList/blob/main/docs/projects/mi210-llm-stack.md): start with mi210-llm-stack (Instinct MI210 (CDNA2) or MI100 (CDNA1))
 - [Build a multi-GPU box with working P2P](https://github.com/launch80/AwesomeList/blob/main/docs/projects/dual-r9700-vllm-proxmox.md): start with dual-r9700-vllm-proxmox (2× GPUs on an EPYC-class host)
 - [Benchmark an existing endpoint](https://github.com/launch80/AwesomeList/blob/main/docs/projects/betterbench.md): start with betterbench (Any)
-- [Use an Intel Arc GPU](https://github.com/launch80/AwesomeList/blob/main/docs/projects/krea2-intel-arc-b580.md): start with krea2-intel-arc-b580 (Arc B580)
+- [Use an Intel Arc GPU](https://github.com/launch80/AwesomeList/blob/main/docs/projects/b65.md): start with b65 (Arc Pro B65 or Arc B580)
 - [Monitor my GPUs while tuning](https://github.com/launch80/AwesomeList/blob/main/docs/projects/r9v.md): start with r9v (R9700 or V620)
 
 ## Docs
@@ -48,6 +48,7 @@ Cite record IDs. Ask the user for GPU model, GPU count, VRAM and OS if they are 
 
 - [aiter-cdna2](https://github.com/launch80/AwesomeList/blob/main/docs/projects/aiter-cdna2.md): Binary-patches AMD AITER (officially CDNA3+) to unlock its fast paths on CDNA2.
 - [alloyium](https://github.com/launch80/AwesomeList/blob/main/docs/projects/alloyium.md): Real-time communication between agents using existing Claude/ChatGPT subscriptions.
+- [b65](https://github.com/launch80/AwesomeList/blob/main/docs/projects/b65.md): Qwen3.8-27B at 71.8 tok/s on one Arc Pro B65 — a baked INT4 checkpoint that stock vLLM XPU loads without weight patches.
 - [betterbench](https://github.com/launch80/AwesomeList/blob/main/docs/projects/betterbench.md): The community's go-to benchmark suite for vLLM and llama.cpp endpoints.
 - [bmorgan-gfx1201-launchers](https://github.com/launch80/AwesomeList/blob/main/docs/projects/bmorgan-gfx1201-launchers.md): Fork of the zzpanic launchers with fixes and DFlash changes contributed in-server.
 - [capicua-vllm-rocm-rdna4](https://github.com/launch80/AwesomeList/blob/main/docs/projects/capicua-vllm-rocm-rdna4.md): RDNA4 vLLM fork — Qwen 3.8 27B MXFP4 at 200K context with MTP on 2× RX 9070 XT.

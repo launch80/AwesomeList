@@ -160,7 +160,7 @@ volunteer has reproduced it — today most entries are `unverified`, with author
 | **Run fast inference on MI210 / MI100**<br><sub>mi210-llm-stack maps models to serving tiers first; int8-vllm is the MI100 path.</sub> | Instinct MI210 (CDNA2) or MI100 (CDNA1) | [davetha/mi210-llm-stack](docs/projects/mi210-llm-stack.md) | [davetha/mi210-vllm](docs/projects/mi210-vllm.md) · [davetha/aiter-cdna2](docs/projects/aiter-cdna2.md) · [curvedinf/int8-vllm](docs/projects/int8-vllm.md) | Datacenter / used-accelerator owner |
 | **Build a multi-GPU box with working P2P**<br><sub>Documents passthrough, P2P and the RCCL patches needed to make P2P work; vllm-radiance-p2p is the RDNA3 equivalent.</sub> | 2× GPUs on an EPYC-class host | [bkvargyas/dual-r9700-vllm-proxmox](docs/projects/dual-r9700-vllm-proxmox.md) | [mkadrlik/vllm-radiance-p2p](docs/projects/vllm-radiance-p2p.md) | Workstation or server builder |
 | **Benchmark an existing endpoint**<br><sub>The community's go-to benchmark suite; use it so your numbers are comparable to others'.</sub> | Any | [GGZ14/BetterBench](docs/projects/betterbench.md) | — | Operator comparing configurations |
-| **Use an Intel Arc GPU**<br><sub>Only Arc datapoint listed; vllm-expert-cache includes Intel porting docs. ⚠️ No LLM-serving recipe for Arc is listed yet.</sub> | Arc B580 | [davetha/krea2-intel-arc-b580](docs/projects/krea2-intel-arc-b580.md) | [davetha/vllm-expert-cache](docs/projects/vllm-expert-cache.md) | Intel GPU owner |
+| **Use an Intel Arc GPU**<br><sub>B65 is the only Arc LLM-serving setup listed, with a recipe and BetterBench numbers; krea2 is an image-model datapoint on the B580, and vllm-expert-cache includes Intel porting docs. ⚠️ B65 is measured on one 32 GB Arc Pro B65 only; smaller Arc cards are untested.</sub> | Arc Pro B65 or Arc B580 | [launch80/B65](docs/projects/b65.md) | [davetha/krea2-intel-arc-b580](docs/projects/krea2-intel-arc-b580.md) · [davetha/vllm-expert-cache](docs/projects/vllm-expert-cache.md) | Intel GPU owner |
 | **Monitor my GPUs while tuning**<br><sub>R9V is actively maintained in-server for the R9700.</sub> | R9700 or V620 | [Dyluhn/R9V](docs/projects/r9v.md) | [BlivionIaG/v620_toolbox](docs/projects/v620-toolbox.md) | Anyone running a rig |
 
 Not sure what fits your hardware? Run the selector:
@@ -178,7 +178,7 @@ python scripts/selector.py --gpu r9700 --count 1 --need openai_api
 - `historical` — Useful reference, but no longer the suggested default.
 - `unverified` — Submitted but not yet reproduced by a maintainer or community volunteer.
 
-Currently: 1 supported, 2 experimental, 33 unverified.
+Currently: 1 supported, 3 experimental, 33 unverified.
 
 ## Directory
 
@@ -227,7 +227,7 @@ Currently: 1 supported, 2 experimental, 33 unverified.
 - **[davetha/krea2-intel-arc-b580](https://github.com/davetha/krea2-intel-arc-b580)** — Krea2 image-model test harness on Intel Arc B580. Built by **davetha**.<br>
   `unverified` · Intel Arc · diffusion · [card →](docs/projects/krea2-intel-arc-b580.md)
 
-*Also relevant here:* [hifi/vllm-radlight](docs/projects/vllm-radlight.md) · [SlyBase/vllm-sly-radiance](docs/projects/vllm-sly-radiance.md) · [StillDeadcode/vllm-radiance](docs/projects/vllm-radiance.md)
+*Also relevant here:* [launch80/B65](docs/projects/b65.md) · [hifi/vllm-radlight](docs/projects/vllm-radlight.md) · [SlyBase/vllm-sly-radiance](docs/projects/vllm-sly-radiance.md) · [StillDeadcode/vllm-radiance](docs/projects/vllm-radiance.md)
 
 ### vLLM / Radiance Ecosystem
 
@@ -261,6 +261,8 @@ Currently: 1 supported, 2 experimental, 33 unverified.
 
 ### Launchers & Deployment Recipes
 
+- **[launch80/B65](https://github.com/launch80/B65)** — Qwen3.8-27B at 71.8 tok/s on one Arc Pro B65 — a baked INT4 checkpoint that stock vLLM XPU loads without weight patches. Built by **launch80**.<br>
+  `experimental` · Intel Arc · vLLM · 5 benchmark records · [card →](docs/projects/b65.md)
 - **[davetha/mi210-llm-stack](https://github.com/davetha/mi210-llm-stack)** — Full MI210 LLM stack documentation with a per-tier model-weight serving matrix. Built by **davetha**, shared by @mldatascientist.<br>
   `unverified` · CDNA2 · vLLM · [card →](docs/projects/mi210-llm-stack.md)
 - **[zzpanic/qwen3.6-vllm-gfx1201-launchers](https://github.com/zzpanic/qwen3.6-vllm-gfx1201-launchers)** — The de-facto standard launch scripts for single-R9700 vLLM + DFlash2. Built by **zzpanic**.<br>

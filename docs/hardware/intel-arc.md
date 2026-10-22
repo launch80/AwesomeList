@@ -2,7 +2,7 @@
 
 # Intel Arc
 
-GPUs: Arc B580 (12 GB)
+GPUs: Arc B580 (12 GB), Arc Pro B65 (32 GB)
 
 Selector: `python scripts/selector.py --gpu arc_b580 --count 1`
 
@@ -10,12 +10,26 @@ Selector: `python scripts/selector.py --gpu arc_b580 --count 1`
 
 | I want to… | Hardware | Start with | Then look at | Typical reader |
 |---|---|---|---|---|
-| **Use an Intel Arc GPU**<br><sub>Only Arc datapoint listed; vllm-expert-cache includes Intel porting docs. ⚠️ No LLM-serving recipe for Arc is listed yet.</sub> | Arc B580 | [davetha/krea2-intel-arc-b580](../projects/krea2-intel-arc-b580.md) | [davetha/vllm-expert-cache](../projects/vllm-expert-cache.md) | Intel GPU owner |
+| **Use an Intel Arc GPU**<br><sub>B65 is the only Arc LLM-serving setup listed, with a recipe and BetterBench numbers; krea2 is an image-model datapoint on the B580, and vllm-expert-cache includes Intel porting docs. ⚠️ B65 is measured on one 32 GB Arc Pro B65 only; smaller Arc cards are untested.</sub> | Arc Pro B65 or Arc B580 | [launch80/B65](../projects/b65.md) | [davetha/krea2-intel-arc-b580](../projects/krea2-intel-arc-b580.md) · [davetha/vllm-expert-cache](../projects/vllm-expert-cache.md) | Intel GPU owner |
 
 ## Projects
 
+- **[launch80/B65](https://github.com/launch80/B65)** — Qwen3.8-27B at 71.8 tok/s on one Arc Pro B65 — a baked INT4 checkpoint that stock vLLM XPU loads without weight patches. Built by **launch80**.<br>
+  `experimental` · Intel Arc · vLLM · 5 benchmark records · [card →](../projects/b65.md)
 - **[davetha/krea2-intel-arc-b580](https://github.com/davetha/krea2-intel-arc-b580)** — Krea2 image-model test harness on Intel Arc B580. Built by **davetha**.<br>
   `unverified` · Intel Arc · diffusion · [card →](../projects/krea2-intel-arc-b580.md)
+
+## Reported benchmarks
+
+Mixed modes — check the Mode column before comparing. See [all benchmarks](../benchmarks.md).
+
+| Project | GPUs | Model | Quant | Context | Concurrency | Decode tok/s | Prefill tok/s | Runtime | Mode | Fields reported | Source |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| [launch80/B65](../projects/b65.md) | 1× Arc Pro B65 | Qwen3.8-27B GPTQ-Int4 baked | w4a16 | 32K | 8 | 196 | — | vLLM 0.27.2 (vllm-openai-xpu nightly) MTP k=6, draft vocab prefix 32768 | batched | 9/16 | [repository](https://github.com/launch80/B65/blob/main/results/bake-betterbench-baked-r6on.json) |
+| [launch80/B65](../projects/b65.md) | 1× Arc Pro B65 | Qwen3.8-27B GPTQ-Int4 baked | w4a16 | 32K | 1 | 72 | — | vLLM 0.27.2 (vllm-openai-xpu nightly) MTP k=6, draft vocab prefix 32768 | single_stream | 9/16 | [repository](https://github.com/launch80/B65/blob/main/results/bake-betterbench-baked-r6on.json) |
+| [launch80/B65](../projects/b65.md) | 1× Arc Pro B65 | Qwen3.8-27B GPTQ-Int4 baked v2 | w4a16 | 32K | 1 | 74 | — | vLLM 0.27.2 (vllm-openai-xpu nightly) MTP k=6, draft vocab prefix 32768 | single_stream | 9/16 | [repository](https://github.com/launch80/B65/blob/main/results/bake-v2-betterbench-k6.json) |
+| [launch80/B65](../projects/b65.md) | 1× Arc Pro B65 | Swift-1.5 Qwen3.8-27B Uncensored Int4 baked + DFlash2 Int4 drafter | w4a16 | 128K | 1 | 97 (median) | — | vLLM 0.30.0 (vllm-openai-xpu) DFlash2 INT4 drafter k=7 | single_stream | 9/16 | [repository](https://github.com/launch80/B65/blob/main/docs/dflash2.md) |
+| [launch80/B65](../projects/b65.md) | 1× Arc Pro B65 | Swift-1.5 Qwen3.8-27B Uncensored Int4 baked | w4a16 | 256K | 1 | 80 (median) | — | vLLM 0.30.0 (vllm-openai-xpu) MTP k=6 | single_stream | 9/16 | [repository](https://github.com/launch80/B65/blob/main/docs/dflash2.md) |
 
 ## Works with any hardware
 

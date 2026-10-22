@@ -24,7 +24,7 @@ Canonical terms used in every catalog record. The schemas reject anything not li
 | `cdna` | AMD CDNA1 datacenter GPUs (gfx908), e.g. Instinct MI100. |
 | `cdna2` | AMD CDNA2 datacenter GPUs (gfx90a), e.g. Instinct MI210 / MI250X. |
 | `cdna3` | AMD CDNA3 datacenter GPUs (gfx942), e.g. Instinct MI300X. |
-| `intel_arc` | Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580. |
+| `intel_arc` | Intel Arc Alchemist / Battlemage GPUs, e.g. Arc B580, Arc Pro B65. |
 | `nvidia_blackwell` | NVIDIA Blackwell GPUs, e.g. RTX Pro 6000, DGX Spark (GB10). |
 
 ## `runtime`
@@ -200,5 +200,6 @@ Canonical terms used in every catalog record. The schemas reject anything not li
 | `mi210` | Instinct MI210 | `cdna2` | gfx90a | 64 |
 | `mi250x` | Instinct MI250X | `cdna2` | gfx90a | 128 |
 | `arc_b580` | Arc B580 | `intel_arc` | — | 12 |
+| `arc_pro_b65` | Arc Pro B65 | `intel_arc` | — | 32 |
 | `rtx_pro_6000` | RTX Pro 6000 Blackwell | `nvidia_blackwell` | — | 96 |
 | `dgx_spark` | DGX Spark (GB10) | `nvidia_blackwell` | — | 128 |

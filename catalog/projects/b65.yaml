@@ -1,0 +1,76 @@
+id: b65
+name: launch80/B65
+tagline: Qwen3.8-27B at 71.8 tok/s on one Arc Pro B65 — a baked INT4 checkpoint that stock vLLM XPU loads without weight patches.
+use_it_if: You have an Intel Arc Pro B-series card and want a measured, quality-gated Qwen3.8-27B setup on vLLM XPU with MTP or DFlash2 speculative decoding.
+kind: patch_set
+categories: [launchers, inference_servers]
+maturity: experimental
+audience: developer
+description: >
+  A single-card Arc Pro B65 32 GB project that speeds up batch-1 decode by making the model read
+  fewer bytes per token. The INT4 lm_head and INT4 MTP draft layer are baked to disk in the
+  body's GPTQ INT4 g128 layout (published as Launch80/Qwen3.8-27B-GPTQ-Int4-baked), and a
+  runtime patch limits the draft to the first 32,768 vocabulary rows. Decode went from 24.7 to
+  71.8 tok/s in the shipped config on vLLM 0.27.2 XPU (BetterBench, single stream). A later
+  INT4-baked DFlash2 drafter reaches 96.7 tok/s on a Swift-1.5 bake with vLLM 0.30.0. The repo
+  also includes the quality gates (perplexity, paired GSM8K, greedy invariance), the bake
+  tooling, and a 3-bit GEMV kernel the author measured and rejected.
+links:
+  repository: https://github.com/launch80/B65
+people:
+  builders: [launch80]
+  contributors: [Wrapzii]
+hardware:
+  vendors: [intel]
+  architectures: [intel_arc]
+  gpu_models: [arc_pro_b65]
+  gpu_count:
+    min: 1
+  host_notes: "Author's box: Core Ultra 7 270K, 30 GB RAM, B65 in a chipset PCIe 4.0 x4 slot (decode reads VRAM, not the bus). On a host with several Intel GPUs, pass the render node by PCI address (GPU_BDF); ZE_AFFINITY_MASK=0 alone can select the wrong card."
+software:
+  runtimes: [vllm]
+  os: [ubuntu]
+  os_versions: ["26.04"]
+  container: true
+  stack_notes: "As stated by the author: vllm/vllm-openai-xpu 0.27.2 nightly (pinned by digest in run.sh) for the baked-checkpoint numbers; vllm-openai-xpu 0.30.0 for DFlash2. Correctness patches from SergiioB's B70 cookbook (MTP nightly, MTP boundary, GDN mixed-split v5) are applied at container start."
+provides: [openai_api, tool_calling, speculative_decoding, mtp, dflash, continuous_batching, long_context]
+supports:
+  model_families: [qwen3]
+  models:
+    - Launch80/Qwen3.8-27B-GPTQ-Int4-baked
+    - Launch80/Qwen3.8-27B-GPTQ-Int4-baked-v2
+    - Launch80/Swift-1.5-Qwen3.8-27B-Uncensored-Int4-baked
+    - Launch80/Qwen3.8-27B-DFlash2-Int4-baked-drafter (drafter)
+    - SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16 (with boot-time patches)
+  quantizations: [w4a16]
+  topologies: [single_gpu]
+quick_start: |
+  vllm serve Launch80/Qwen3.8-27B-GPTQ-Int4-baked --quantization gptq --dtype float16 \
+    --kv-cache-dtype fp8 --max-num-seqs 32 --max-model-len 32768 \
+    --speculative-config '{"method":"mtp","num_speculative_tokens":6}'
+known_issues:
+  - With MTP on, the engine dies under concurrent load unless the GDN mixed-split patch is applied (on by default in the repo's launchers).
+  - MTP emits garbage on prompts under about 8 tokens, even with the stock fp16 head and no patches.
+  - logprobs and prompt_logprobs return NaN whenever MTP is enabled; run perplexity with speculation off.
+  - Hybrid GDN models fail engine start at vLLM's default max_num_seqs of 256; use 32.
+  - "bake/serve-baked.sh at commit 43e02c1 reads $HERE before setting it, so under set -u it exits with 'HERE: unbound variable' unless DFLASH_DIR is set."
+evidence:
+  - b65-arc-pro-b65-qwen38-27b-baked-single
+  - b65-arc-pro-b65-qwen38-27b-baked-conc8
+  - b65-arc-pro-b65-qwen38-27b-baked-v2-single
+  - b65-arc-pro-b65-swift15-mtp6-single
+  - b65-arc-pro-b65-swift15-dflash2-int4-single
+recipes: [arc-pro-b65-qwen38-27b-w4a16-vllm]
+notes: >
+  Builds on SergiioB/intel-arc-pro-b70-inference-cookbook (pinned image, MTP patches, base
+  checkpoint, crash fix). The README says the cookbook patches are not redistributed, but
+  commit 43e02c1 added patch_mtp_nightly.py, patch_mtp_boundary.py and patch_gdn_mixed_split_v5.py
+  to patches/. The card is firmware-capped at 200 W / 2400 MHz. 71.8 is decode-only with short
+  prompts; the author reports ~48 tok/s end-to-end through a coding agent at 21k context. The
+  baked-v2 checkpoint (73.5 tok/s) has not been through the quality gates. An embed-INT8
+  derivative (bake/bake_embed_quant.py) frees ~1.15 GiB for KV cache on a 24 GiB B60.
+verification:
+  level: author_reported
+  last_verified: "2026-10-20"
+  last_commit_checked: 43e02c1
+  listed_since: "2026-10-20"

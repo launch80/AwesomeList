@@ -16,6 +16,10 @@ One request at a time: what a single user feels.
 
 | Project | GPUs | Model | Quant | Context | Concurrency | Decode tok/s | Runtime | Mode | Fields reported | Source |
 |---|---|---|---|---|---|---|---|---|---|---|
+| [launch80/B65](projects/b65.md) | 1× Arc Pro B65 | Qwen3.8-27B GPTQ-Int4 baked | w4a16 | 32K | 1 | 72 | vLLM 0.27.2 (vllm-openai-xpu nightly) MTP k=6, draft vocab prefix 32768 | single_stream | 9/16 | [repository](https://github.com/launch80/B65/blob/main/results/bake-betterbench-baked-r6on.json) |
+| [launch80/B65](projects/b65.md) | 1× Arc Pro B65 | Qwen3.8-27B GPTQ-Int4 baked v2 | w4a16 | 32K | 1 | 74 | vLLM 0.27.2 (vllm-openai-xpu nightly) MTP k=6, draft vocab prefix 32768 | single_stream | 9/16 | [repository](https://github.com/launch80/B65/blob/main/results/bake-v2-betterbench-k6.json) |
+| [launch80/B65](projects/b65.md) | 1× Arc Pro B65 | Swift-1.5 Qwen3.8-27B Uncensored Int4 baked + DFlash2 Int4 drafter | w4a16 | 128K | 1 | 97 (median) | vLLM 0.30.0 (vllm-openai-xpu) DFlash2 INT4 drafter k=7 | single_stream | 9/16 | [repository](https://github.com/launch80/B65/blob/main/docs/dflash2.md) |
+| [launch80/B65](projects/b65.md) | 1× Arc Pro B65 | Swift-1.5 Qwen3.8-27B Uncensored Int4 baked | w4a16 | 256K | 1 | 80 (median) | vLLM 0.30.0 (vllm-openai-xpu) MTP k=6 | single_stream | 9/16 | [repository](https://github.com/launch80/B65/blob/main/docs/dflash2.md) |
 | [SlyBase/vllm-sly-radiance](projects/vllm-sly-radiance.md) | 1× Radeon AI PRO R9700 | Qwen 3.8 27B Quark-AWQ-MXFP4 | mxfp4 | 256K | 1 | 150 | vLLM 1.5.1 DFlash2 k=7 + prompt lookup, Cactus delta 0.5 | single_stream | 8/16 | [repository](https://github.com/SlyBase/vllm-sly-radiance#performance) |
 | [Capicua25x/vllm-rocm-rdna4](projects/capicua-vllm-rocm-rdna4.md) | 2× Radeon RX 9070 XT | Qwen 3.8 27B MXFP4 | mxfp4 | 200K | 1 | ~50 | vLLM MTP | single_stream | 4/16 | list_entry |
 
@@ -25,6 +29,7 @@ Total decode throughput across concurrent requests.
 
 | Project | GPUs | Model | Quant | Context | Concurrency | Decode tok/s | Runtime | Mode | Fields reported | Source |
 |---|---|---|---|---|---|---|---|---|---|---|
+| [launch80/B65](projects/b65.md) | 1× Arc Pro B65 | Qwen3.8-27B GPTQ-Int4 baked | w4a16 | 32K | 8 | 196 | vLLM 0.27.2 (vllm-openai-xpu nightly) MTP k=6, draft vocab prefix 32768 | batched | 9/16 | [repository](https://github.com/launch80/B65/blob/main/results/bake-betterbench-baked-r6on.json) |
 | [SlyBase/vllm-sly-radiance](projects/vllm-sly-radiance.md) | 1× Radeon AI PRO R9700 | Qwen 3.8 27B Quark-AWQ-MXFP4 | mxfp4 | 256K | 8 | 503 | vLLM 1.5.1 DFlash2 k=7 + prompt lookup, Cactus delta 0.5 | batched | 8/16 | [repository](https://github.com/SlyBase/vllm-sly-radiance#performance) |
 | [Capicua25x/vllm-rocm-rdna4](projects/capicua-vllm-rocm-rdna4.md) | 2× Radeon RX 9070 XT | Qwen 3.8 27B MXFP4 | mxfp4 | 200K | not reported | ~140 (peak) | vLLM MTP | batched | 3/16 | list_entry |
 | [leapdragon/vllm-rdna2-recipe](projects/vllm-rdna2-recipe.md) | 4× Radeon Pro V620 | not reported | — | not reported | 8 | ~150 | vLLM | batched | 2/16 | list_entry |
